@@ -20,6 +20,10 @@ public class ItemResponse {
         this.value = value;
     }
 
+    public static ItemResponse of(Item item) {
+        return new ItemResponse(item.getId(), item.getType(), item.getName(), item.getValue());
+    }
+
     public Long getId() {
         return id;
     }

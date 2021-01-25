@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class ItemController {
@@ -22,6 +24,14 @@ public class ItemController {
         ItemResponse itemResponse = new ItemResponse(newItem.getId());
         return ResponseEntity.created(URI.create("/items/" + newItem.getId()))
                 .body(itemResponse);
+    }
+
+    @GetMapping(value = "/items")
+    public ResponseEntity<List<ItemResponse>> getItems(@RequestBody ItemRequest itemRequest) {
+        List<ItemResponse> itemResponse = itemDao.findAll().stream()
+                .map(ItemResponse::of)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok().body(itemResponse);
     }
 
     @GetMapping(value = "/items/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
