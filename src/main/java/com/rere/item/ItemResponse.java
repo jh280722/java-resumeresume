@@ -5,6 +5,7 @@ public class ItemResponse {
     private String type;
     private String name;
     private String value;
+    Long boxId;
 
     public ItemResponse() {
     }
@@ -13,15 +14,16 @@ public class ItemResponse {
         this.id = id;
     }
 
-    public ItemResponse(Long id, String type, String name, String value) {
+    public ItemResponse(Long id, String type, String name, String value,Long boxId) {
         this.id = id;
         this.type = type;
         this.name =name;
         this.value = value;
+        this.boxId = boxId;
     }
 
     public static ItemResponse of(Item item) {
-        return new ItemResponse(item.getId(), item.getType(), item.getName(), item.getValue());
+        return new ItemResponse(item.getId(), item.getType(), item.getName(), item.getValue(),item.getBoxId());
     }
 
     public Long getId() {
@@ -38,5 +40,8 @@ public class ItemResponse {
 
     public String getValue() {
         return value;
+    }
+    public Long getBoxId() {
+        return boxId;
     }
 }

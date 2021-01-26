@@ -24,13 +24,14 @@ public class ItemDao {
                 resultSet.getLong("id"),
                 resultSet.getString("type"),
                 resultSet.getString("name"),
-                resultSet.getString("value")
+                resultSet.getString("value"),
+                resultSet.getLong("boxid")
         );
         return item;
     };
 
     public Item save(Item item) {
-        String sql = "insert into item (type, name, value) values (? , ?, ?)";
+        String sql = "insert into item (type, name, value, boxid) values (? , ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
@@ -38,16 +39,17 @@ public class ItemDao {
             ps.setString(1, item.getType());
             ps.setString(2, item.getName());
             ps.setString(3, item.getValue());
+            ps.setLong(4, item.getBoxId());
             return ps;
         }, keyHolder);
-        Item persistItem = new Item(keyHolder.getKey().longValue(), item.getType(), item.getName(), item.getValue());
+        Item persistItem = new Item(keyHolder.getKey().longValue(), item.getType(), item.getName(), item.getValue(),item.getBoxId());
 
         return persistItem;
     }
 
     public void update(Item originItem, Item updateItem) {
-        String sql = "update item set type=?, name=?, value=? where id = ?";
-        jdbcTemplate.update(sql, updateItem.getType(),updateItem.getName(), updateItem.getValue() ,originItem.getId());
+        String sql = "update item set type=?, name=?, value=?, boxid=? where id = ?";
+        jdbcTemplate.update(sql, updateItem.getType(),updateItem.getName(), updateItem.getValue(),updateItem.getBoxId() ,originItem.getId());
     }
 
     public List<Item> findAll() {

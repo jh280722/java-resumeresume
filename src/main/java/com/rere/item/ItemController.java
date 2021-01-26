@@ -19,7 +19,7 @@ public class ItemController {
 
     @PostMapping(value = "/items")
     public ResponseEntity<ItemResponse> createItem(@RequestBody ItemRequest itemRequest) {
-        Item item = new Item(itemRequest.getType(), itemRequest.getName(), itemRequest.getValue());
+        Item item = new Item(itemRequest.getType(), itemRequest.getName(), itemRequest.getValue(),itemRequest.getBoxId());
         Item newItem = itemDao.save(item);
         ItemResponse itemResponse = new ItemResponse(newItem.getId());
         return ResponseEntity.created(URI.create("/items/" + newItem.getId()))
@@ -38,14 +38,14 @@ public class ItemController {
     public ResponseEntity<ItemResponse> showItem(@PathVariable Long id) {
         Item newItem = itemDao.findById(id);
         ItemResponse itemResponse = new ItemResponse(
-                newItem.getId(), newItem.getType(), newItem.getName(), newItem.getValue());
+                newItem.getId(), newItem.getType(), newItem.getName(), newItem.getValue(), newItem.getBoxId());
         return ResponseEntity.ok().body(itemResponse);
     }
 
     @PutMapping(value="/items/{id}")
     public ResponseEntity updateItem(@RequestBody ItemRequest itemRequest,@PathVariable Long id){
         Item item = itemDao.findById(id);
-        Item newItem = new Item( itemRequest.getType(), itemRequest.getName(), itemRequest.getValue());
+        Item newItem = new Item( itemRequest.getType(), itemRequest.getName(), itemRequest.getValue(),itemRequest.getBoxId());
         itemDao.update(item, newItem);
         return ResponseEntity.ok().build();
     }
