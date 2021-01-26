@@ -1,9 +1,11 @@
 package com.rere.box;
 
 import com.rere.AcceptanceTest;
-import com.rere.item.Item;
-import com.rere.item.ItemRequest;
-import com.rere.item.ItemResponse;
+import com.rere.box.dto.BoxRequest;
+import com.rere.box.dto.BoxResponse;
+import com.rere.item.domain.Item;
+import com.rere.item.dto.ItemRequest;
+import com.rere.item.dto.ItemResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -37,9 +39,9 @@ public class BoxAcceptanceTest extends AcceptanceTest {
 
         // given
         JHText = 아이템_등록되어_있음("text", "이름", "준호",1L);
-        JHText1 = new Item("text", "이름", "준호",1L);
+        JHText1 = Item.of("text", "이름", "준호",1L);
         HMTextArea = 아이템_등록되어_있음("textArea", "자기소개", "나는 한민",1L);
-        HMTextArea1 = new Item("textArea", "자기소개", "나는 한민",1L);
+        HMTextArea1 = Item.of("textArea", "자기소개", "나는 한민",1L);
 
         mainImage = new ItemRequest("image", "이미지", "temp.jpg",1L);
         dateToday = new ItemRequest("date", "날짜", "2021-01-17",1L);

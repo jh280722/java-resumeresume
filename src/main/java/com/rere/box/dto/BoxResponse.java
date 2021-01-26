@@ -1,8 +1,8 @@
-package com.rere.box;
+package com.rere.box.dto;
 
-import com.rere.item.Item;
+import com.rere.box.domain.Box;
+import com.rere.item.domain.Item;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BoxResponse {
@@ -16,14 +16,9 @@ public class BoxResponse {
         this.id = id;
     }
 
-    public BoxResponse(Long id, List<Item>items) {
+    public BoxResponse(Long id, List<Item> items) {
         this.id = id;
-        this.items=new ArrayList<>();
-        if(items!=null)
-        for (Item item:items
-             ) {
-            this.items.add(item);
-        }
+        this.items = items;
     }
 
     public static BoxResponse of(Box box) {
@@ -33,6 +28,7 @@ public class BoxResponse {
     public Long getId() {
         return id;
     }
+
     public List<Item> getItems() {
         return items;
     }

@@ -1,5 +1,6 @@
-package com.rere.box;
+package com.rere.box.dao;
 
+import com.rere.box.domain.Box;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -19,28 +20,24 @@ public class BoxDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private final RowMapper<Box> actorRowMapper = (resultSet, rowNum) -> {
-        Box box = new Box(
-                resultSet.getLong("id")
-        );
-        return box;
-    };
+    private final RowMapper<Box> actorRowMapper = (resultSet, rowNum) -> Box.of(
+            resultSet.getLong("id")
+    );
 
     public Box save(Box box) {
-        String sql = "insert into box (docid) values (?)";
+        String sql = "insert into box (doc_id) values (?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(sql, new String[] { "id" });
+            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
             ps.setLong(1, 1);
             return ps;
         }, keyHolder);
-        Box persistItem = new Box(keyHolder.getKey().longValue(), box.getItems());
 
-        return persistItem;
+        return Box.of(keyHolder.getKey().longValue(), box.getItems());
     }
 
-    public void update(Box originBox, Box updateBox) {
+    public void update(Long id, Box updateBox) {
 //        String sql = "update item set type=?, name=?, value=?, boxid=? where id = ?";
 //        jdbcTemplate.update(sql, updateBox.getType(),updateBox.getName(), updateBox.getValue(),updateBox.getBoxId() ,originBox.getId());
     }
