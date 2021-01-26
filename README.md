@@ -8,12 +8,25 @@
 - item의 명칭 부분을 더블 클릭하여 명칭 수정이 가능하다. 
   ex) 이름 :, 나이 :
 - 복사 붙여넣기가 가능해야한다.
+- editor 구현 
+  - item의 value의 String 값을 변경하여 처리한다.
+- 크기 변경 가능
+- item, table 사이의 순서 구별이 가능해야한다.
+
+### table
+- tableItem의 집합인 표이다.
+- 현재 row, col를 저장하고 있다.
+- item, table 사이의 순서 구별이 가능해야한다.
+#### tableItem
+- row, col 위치에 해당되는 value이다.
 
 ### Box
-- item의 집합으로 하나의 상자이다.
+- item와 table의 집합으로 하나의 상자이다.
+  - box의 이름은 없을 수도 있다.
 - box를 추가, 삭제할 수 있어야한다.
 - box에 item을 추가하는 버튼이 있어야한다.
 - 복사 붙여넣기가 가능해야한다.
+- 크기 변경 가능
 
 ### Default Document
 - user정보에 따라 sortation에 해당되는 기본 틀을 생성해둔다.
@@ -43,11 +56,4 @@
     - 각 sortation에 해당되는 default document를 등록할 수 있다.
     - 회원정보를 수정, 탈퇴할 수 있다.
     
-
-# 논의사항
-- 각 요소들의 크기 변경 여부
-- table과 item의 관계
-- box의 이름 여부
-- editor 구현
-
 
