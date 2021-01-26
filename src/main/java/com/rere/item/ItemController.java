@@ -27,7 +27,7 @@ public class ItemController {
     }
 
     @GetMapping(value = "/items")
-    public ResponseEntity<List<ItemResponse>> getItems(@RequestBody ItemRequest itemRequest) {
+    public ResponseEntity<List<ItemResponse>> getItems(ItemRequest itemRequest) {
         List<ItemResponse> itemResponse = itemDao.findAll().stream()
                 .map(ItemResponse::of)
                 .collect(Collectors.toList());
