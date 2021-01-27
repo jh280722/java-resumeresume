@@ -11,3 +11,18 @@ spring:
   h2:
     console:
       enabled: true     # h2 console 설정
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        show_sql: true
+    hibernate:
+      ddl-auto: create
+
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql : trace

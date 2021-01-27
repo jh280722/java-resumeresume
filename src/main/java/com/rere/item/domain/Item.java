@@ -2,14 +2,24 @@ package com.rere.item.domain;
 
 import com.rere.item.dto.ItemRequest;
 
+import javax.persistence.*;
+
+@Entity
 public class Item {
     public static final long DEFAULT_ID = 0L;
-    Long id;
-    String type;
-    String name;
-    String value;
-    Long boxId;
-    private Item(){}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String type;
+    @Column(nullable = false)
+    private String name;
+    private String value;
+    @Column(nullable = false)
+    private Long boxId;
+
+    protected Item() {}
     private Item(Long id, String type, String name, String value, Long boxId) {
         this.id = id;
         this.type = type;
@@ -56,5 +66,9 @@ public class Item {
 
     public Long getBoxId() {
         return boxId;
+    }
+
+    public void changeName(String Name) {
+        this.name = name;
     }
 }
