@@ -1,37 +1,52 @@
 package com.rere.item.domain;
 
+import com.rere.box.domain.Box;
 import com.rere.item.dto.ItemRequest;
 
+import javax.persistence.*;
+
+@Entity
 public class Item {
     public static final long DEFAULT_ID = 0L;
-    Long id;
-    String type;
-    String name;
-    String value;
-    Long boxId;
-    private Item(){}
-    private Item(Long id, String type, String name, String value, Long boxId) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String type;
+
+    @Column(nullable = false)
+    private String name;
+
+    private String value;
+
+    @ManyToOne
+    @JoinColumn(name = "box_id")
+    private Box box;
+
+    protected Item() {}
+    private Item(Long id, String type, String name, String value, Box box) {
         this.id = id;
         this.type = type;
         this.name = name;
         this.value = value;
-        this.boxId = boxId;
+        this.box = box;
     }
 
-    private Item(String type, String name, String value, Long boxId) {
-        this(DEFAULT_ID, type, name, value, boxId);
+    private Item(String type, String name, String value, Box box) {
+        this(DEFAULT_ID, type, name, value, box);
     }
 
     public static Item of(ItemRequest itemRequest) {
-        return new Item(itemRequest.getType(), itemRequest.getName(), itemRequest.getValue(), itemRequest.getBoxId());
+        return new Item(itemRequest.getType(), itemRequest.getName(), itemRequest.getValue(), itemRequest.getBox());
     }
 
-    public static Item of(String type, String name, String value, Long boxId) {
-        return new Item(type, name, value, boxId);
+    public static Item of(String type, String name, String value, Box box) {
+        return new Item(type, name, value, box);
     }
 
-    public static Item of(Long id, String type, String name, String value, Long boxId) {
-        return new Item(id, type, name, value, boxId);
+    public static Item of(Long id, String type, String name, String value, Box box) {
+        return new Item(id, type, name, value, box);
     }
 
     public String setDefaultName() {
@@ -54,7 +69,15 @@ public class Item {
         return type;
     }
 
-    public Long getBoxId() {
-        return boxId;
+    public Box getBox() {
+        return box;
+    }
+
+    public void changeName(String name) {
+        this.name = name;
+    }
+
+    public void setBox(Box box) {
+        this.box = box;
     }
 }

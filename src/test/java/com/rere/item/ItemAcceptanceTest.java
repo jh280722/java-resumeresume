@@ -1,6 +1,9 @@
 package com.rere.item;
 
 import com.rere.AcceptanceTest;
+import com.rere.box.domain.Box;
+import com.rere.box.domain.BoxRepository;
+import com.rere.item.domain.ItemRepository;
 import com.rere.item.dto.ItemRequest;
 import com.rere.item.dto.ItemResponse;
 import io.restassured.RestAssured;
@@ -9,6 +12,7 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
@@ -21,23 +25,30 @@ public class ItemAcceptanceTest extends AcceptanceTest {
     private ItemRequest mainImage;
     private ItemRequest dateToday;
 
+    @Autowired
+    private ItemRepository items;
+    @Autowired
+    private BoxRepository boxes;
+
     @BeforeEach
     public void setUp() {
         super.setUp();
 
+        Box box = boxes.save(new Box("box"));
         // given
-        JHText = 아이템_등록되어_있음("text", "이름", "준호", 1L);
-        HMTextArea = 아이템_등록되어_있음("textArea", "자기소개", "나는 한민", 1L);
+        JHText = 아이템_등록되어_있음("text", "이름", "준호", box);
+        HMTextArea = 아이템_등록되어_있음("textArea", "자기소개", "나는 한민", box);
 
-        mainImage = new ItemRequest("image", "이미지", "temp.jpg", 1L);
-        dateToday = new ItemRequest("date", "날짜", "2021-01-17", 1L);
+        mainImage = new ItemRequest("image", "이미지", "temp.jpg", box);
+        dateToday = new ItemRequest("date", "날짜", "2021-01-17", box);
     }
 
     @DisplayName("아이템을 생성한다.")
     @Test
     void createItem() {
+        Box box = boxes.save(new Box("box"));
         // when
-        ExtractableResponse<Response> response = 아이템_생성_요청("text", "이름", "준호", 1L);
+        ExtractableResponse<Response> response = 아이템_생성_요청("text", "이름", "준호", box);
 
         // then
         아이템_생성됨(response);
@@ -115,12 +126,12 @@ public class ItemAcceptanceTest extends AcceptanceTest {
                 .extract();
     }
 
-    public static ItemResponse 아이템_등록되어_있음(String type, String name, String value, Long boxId) {
-        return 아이템_생성_요청(type, name, value, boxId).as(ItemResponse.class);
+    public static ItemResponse 아이템_등록되어_있음(String type, String name, String value, Box box) {
+        return 아이템_생성_요청(type, name, value, box).as(ItemResponse.class);
     }
 
-    public static ExtractableResponse<Response> 아이템_생성_요청(String type, String name, String value, Long boxId) {
-        ItemRequest itemRequest = new ItemRequest(type, name, value, boxId);
+    public static ExtractableResponse<Response> 아이템_생성_요청(String type, String name, String value, Box box) {
+        ItemRequest itemRequest = new ItemRequest(type, name, value, box);
 
         return RestAssured
                 .given().log().all()
