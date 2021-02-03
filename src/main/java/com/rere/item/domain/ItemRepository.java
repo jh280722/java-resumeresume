@@ -6,4 +6,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     Item findByType(String type);
 
     Item findByName(String Name);
+
+    void deleteByBoxId(Long boxId);
 }

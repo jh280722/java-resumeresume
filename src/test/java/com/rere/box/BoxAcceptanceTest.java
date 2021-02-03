@@ -44,7 +44,7 @@ public class BoxAcceptanceTest extends AcceptanceTest {
     public void setUp() {
         super.setUp();
 
-        Box box = boxes.save(new Box("box"));
+        Box box = boxes.save(Box.of("box"));
         // given
         JHText = 아이템_등록되어_있음("text", "이름", "준호",box);
         JHText1 = Item.of("text", "이름", "준호",box);
@@ -58,7 +58,7 @@ public class BoxAcceptanceTest extends AcceptanceTest {
         items.add(JHText1);
         items.add(HMTextArea1);
         box2= 박스_등록되어_있음(items);
-        box1= new BoxRequest(items);
+        box1= new BoxRequest("box1", items);
     }
 
     @DisplayName("박스를 생성한다.")
@@ -148,7 +148,7 @@ public class BoxAcceptanceTest extends AcceptanceTest {
     }
 
     public static ExtractableResponse<Response> 박스_생성_요청(List<Item>items) {
-        BoxRequest boxRequest = new BoxRequest(items);
+        BoxRequest boxRequest = new BoxRequest("box1", items);
 
         return RestAssured
                 .given().log().all()

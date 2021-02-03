@@ -38,7 +38,7 @@ public class BoxController {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<Void> updateBox(@RequestBody BoxRequest boxRequest, @PathVariable Long id) {
-        boxService.update(id, boxRequest);
+        boxService.updateName(id, boxRequest);
         return ResponseEntity.ok().build();
     }
 

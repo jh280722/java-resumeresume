@@ -3,6 +3,7 @@ package com.rere.item.dto;
 import com.rere.box.domain.Box;
 
 public class ItemRequest {
+    private int seq;
     private String type;
     private String name;
     private String value;
@@ -11,7 +12,8 @@ public class ItemRequest {
     public ItemRequest() {
     }
 
-    public ItemRequest(String type, String name, String value, Box box) {
+    public ItemRequest(int seq, String type, String name, String value, Box box) {
+        this.seq = seq;
         this.type = type;
         this.name = name;
         this.value = value;
@@ -32,5 +34,9 @@ public class ItemRequest {
 
     public Box getBox() {
         return box;
+    }
+
+    public int getSeq() {
+        return seq;
     }
 }

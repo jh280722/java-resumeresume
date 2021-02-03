@@ -1,7 +1,7 @@
 package com.rere.box.application;
 
-import com.rere.box.dao.BoxDao;
 import com.rere.box.domain.Box;
+import com.rere.box.domain.BoxRepository;
 import com.rere.box.dto.BoxRequest;
 import com.rere.box.dto.BoxResponse;
 import com.rere.item.application.ItemService;
@@ -13,35 +13,37 @@ import java.util.stream.Collectors;
 
 @Service
 public class BoxService {
-    private final BoxDao boxDao;
+    public static final long DEFAULT_ID = 0L;
+    private final BoxRepository boxRepository;
     private final ItemService itemService;
 
-    public BoxService(BoxDao boxDao, ItemService itemService) {
-        this.boxDao = boxDao;
+    public BoxService(BoxRepository boxRepository, ItemService itemService) {
+        this.boxRepository = boxRepository;
         this.itemService = itemService;
     }
 
     public List<BoxResponse> getBoxes() {
-        return boxDao.findAll().stream()
+        return boxRepository.findAll().stream()
                 .map(BoxResponse::of)
                 .collect(Collectors.toList());
     }
 
     public BoxResponse findById(Long id) {
-        return BoxResponse.of(boxDao.findById(id));
+        return BoxResponse.of(boxRepository.findById(id).orElse(Box.of(DEFAULT_ID)));
     }
 
-    public void update(Long id, BoxRequest boxRequest) {
-        boxDao.update(id, Box.of(boxRequest));
+    public void updateName(Long id, BoxRequest boxRequest) {
+        Box box = boxRepository.findById(id).orElse(Box.of(DEFAULT_ID));
+        box.changeName(boxRequest.getName());
     }
 
     @Transactional
     public void deleteById(Long id) {
-        boxDao.deleteById(id);
-        itemService.deletByBoxId(id);
+        boxRepository.deleteById(id);
+        itemService.deleteByBoxId(id);
     }
 
     public BoxResponse save(BoxRequest boxRequest) {
-        return BoxResponse.of(boxDao.save(Box.of(boxRequest)));
+        return BoxResponse.of(boxRepository.save(Box.of(boxRequest)));
     }
 }

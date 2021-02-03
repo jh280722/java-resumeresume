@@ -1,7 +1,8 @@
 package com.rere.item.application;
 
-import com.rere.item.dao.ItemDao;
+import com.rere.box.domain.Box;
 import com.rere.item.domain.Item;
+import com.rere.item.domain.ItemRepository;
 import com.rere.item.dto.ItemRequest;
 import com.rere.item.dto.ItemResponse;
 import org.springframework.stereotype.Service;
@@ -11,36 +12,52 @@ import java.util.stream.Collectors;
 
 @Service
 public class ItemService {
-    private final ItemDao itemDao;
+    public static final long DEFAULT_ID = 0L;
+    private final ItemRepository itemRepository;
 
-    public ItemService(ItemDao itemDao) {
-        this.itemDao = itemDao;
+    public ItemService(ItemRepository itemDao) {
+        this.itemRepository = itemDao;
     }
 
     public List<ItemResponse> findAll() {
-        return itemDao.findAll().stream()
+        return itemRepository.findAll().stream()
                 .map(ItemResponse::of)
                 .collect(Collectors.toList());
     }
 
     public ItemResponse findById(Long id) {
-        return ItemResponse.of(itemDao.findById(id));
+        return ItemResponse.of(itemRepository.findById(id).orElse(Item.of()));
     }
 
-    public void update(Long id, ItemRequest itemRequest) {
-        itemDao.update(id, Item.of(itemRequest));
+    public void updateItem(Long id, Item item) {
+        Item updateItem = itemRepository.findById(id).orElse(null);
+        updateItem.changeItem(item);
+    }
+
+    public void updateName(Long id, String name) {
+        Item item = itemRepository.findById(id).orElse(null);
+        item.changeName(name);
+    }
+
+    public void updateValue(Long id, String value) {
+        Item item = itemRepository.findById(id).orElse(null);
+        item.changeValue(value);
+    }
+
+    public void updateBox(Long id, Box box) {
+        Item item = itemRepository.findById(id).orElse(null);
+        item.changeBox(box);
     }
 
     public void deleteById(Long id) {
-        itemDao.deleteById(id);
+        itemRepository.deleteById(id);
     }
 
     public ItemResponse save(ItemRequest itemRequest) {
-        //return ItemResponse.of(itemDao.save(Item.of(itemRequest)));
-        return null;
+        return ItemResponse.of(itemRepository.save(Item.of(itemRequest)));
     }
 
-    public void deletByBoxId(Long boxId) {
-        itemDao.deletByBoxId(boxId);
+    public void deleteByBoxId(Long boxId) {
+        itemRepository.deleteByBoxId(boxId);
     }
 }

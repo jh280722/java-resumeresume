@@ -33,6 +33,7 @@
 - 새 document를 만들때 default document로 등록할 수 있다.
 
 ### Document
+- id, name, sortation_id 
 - box의 집합으로 하나의 문서이다.
     - sortation 내 고유한 이름을 가진다.
       - 생성시 중복 검사를 하여 자동으로 
@@ -43,6 +44,7 @@
     - 다른 sortation으로 이동시 이름 중복 검사를 한다.
 - 복사 붙여넣기가 가능해야한다.
 - 새 문서를 만들때 default document로 만들거나 빈 문서로 만들 수 있다.
+- 수정 취소가 가능해야한다.
 
 ### Sortation
 - document의 집합으로 하나의 구분이다.
