@@ -41,7 +41,7 @@ public class Item {
     }
 
     private Item(int seq, String type, String name, String value, Box box) {
-        this(seq, DEFAULT_ID, type, name, value, box);
+        this(DEFAULT_ID, seq, type, name, value, box);
     }
 
     public static Item of(ItemRequest itemRequest) {
