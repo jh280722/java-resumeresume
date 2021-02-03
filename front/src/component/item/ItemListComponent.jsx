@@ -14,17 +14,17 @@ class ItemlistComponent extends Component{
         super(props);
 
         this.state = {
-            items: [],
+            boxs: [],
             type:'',
             name:'',
             value:'',
+            boxId:'',
             message: null
         }
     }
 
     /*
     컴포넌트가 마운트된 직후 트리에 삽입된 후에 호출된다.
-
     */
     componentDidMount(){
         this.reloadItemList();
@@ -42,8 +42,15 @@ class ItemlistComponent extends Component{
     reloadItemList = () => {
         ApiService.fetchItems()
         .then( res => {
+            let boxSet = res.data.reduce((acc, curr) => {
+                if(!acc[curr.boxId]){
+                    acc[curr.boxId] = [];
+                }
+                acc[curr.boxId].push(curr);
+                return acc;
+            },[])
             this.setState({
-                items:res.data
+                boxs:boxSet
             })
         })
         .catch(err => {
@@ -57,9 +64,6 @@ class ItemlistComponent extends Component{
             this.setState({
                 message: 'Item Deleted Successfully.'
             });
-            this.setState({
-                item: this.state.items.filter(item => item.id !== itemID)
-            });
             this.reloadItemList();
         })
         .catch(err => {
@@ -72,20 +76,18 @@ class ItemlistComponent extends Component{
         this.props.history.push('/edit-item');
     }
 
-    addItem = () => {
-        window.localStorage.removeItem("itemID");
-        this.props.history.push('/add-item');
-    }
-
     onChange = (e) => {
         this.setState({
             [e.target.name] : e.target.value
         })
     }
 
-    onReset = (e) => {
+    onReset = () => {
         this.setState({
-            type:"", name:"", value:""
+            type:"",
+            name:"",
+            value:"",
+            boxId:""
         })
     }
 
@@ -97,6 +99,7 @@ class ItemlistComponent extends Component{
             type: this.state.type,
             name: this.state.name,
             value: this.state.value,
+            boxId : this.state.boxId,
         }
 
         ApiService.addItem(item)
@@ -113,48 +116,64 @@ class ItemlistComponent extends Component{
         });
     }
 
+    addBox = () =>{
+        this.setState({
+            
+        })
+    }
+
     render(){
         return(
             <div>
                 <h2>Item List</h2>
-                <button onClick={this.addItem}> Add Item </button>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Type</th>
-                            <th>Name</th>
-                            <th>Value</th>
-                            <th>Edit</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.state.items.map( item =>
-                            <tr key={item.id}>
-                                <td>{item.type}</td>
-                                <td>{item.name}</td>
-                                <td>{item.value}</td>
+                {this.state.boxs.map((box,index) =>
+                <div key={index}>
+                    <h3>{index}</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Name</th>
+                                <th>Value</th>
+                                <th>BoxId</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {box.map( item =>
+                                <tr key={item.id}>
+                                    <td>{item.type}</td>
+                                    <td>{item.name}</td>
+                                    <td>{item.value}</td>
+                                    <td>{item.boxId}</td>
+                                    <td>
+                                        <button onClick={()=>this.editItem(item.id)}>Edit</button>
+                                        <button onClick={()=>this.deleteItem(item.id)}>Delete</button>
+                                    </td>
+                                </tr>
+                                )}
+                            <tr id={"box"+index}>
                                 <td>
-                                    <button onClick={()=>this.editItem(item.id)}>Edit</button>
-                                    <button onClick={()=>this.deleteItem(item.id)}>Delete</button>
+                                    <input type="text" placeholder="input item type" name={"type"} value={this.state.type} onChange={this.onChange} />
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="input item name" name={"name"} value={this.state.name} onChange={this.onChange} />
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="input item value" name={"value"} value={this.state.value} onChange={this.onChange}/>
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="input box Id" name={"boxId"} value={this.state.boxId} onChange={this.onChange}/>
+                                </td>
+                                <td>
+                                    <button onClick={this.saveItem}>Save</button>
                                 </td>
                             </tr>
-                            )}
-                        <tr>
-                            <td>
-                                <input type="text" placeholder="input item type" name="type" value={this.state.type} onChange={this.onChange} />
-                            </td>
-                            <td>
-                                <input type="text" placeholder="input item name" name="name" value={this.state.name} onChange={this.onChange} />
-                            </td>
-                            <td>
-                                <input type="text" placeholder="input item value" name="value" value={this.state.value} onChange={this.onChange}/>
-                            </td>
-                            <td>
-                                <button onClick={this.saveItem}>Save</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
+                )}
+                <button onClick={this.addBox}>박스 추가</button>
             </div>
         );
     }

@@ -1,7 +1,6 @@
 import React from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import ItemListComponent from "../item/ItemListComponent";
-import AddItemComponent from "../item/AddItemComponent";
 import EditItemComponent from "../item/EditItemComponent";
 
 
@@ -24,7 +23,6 @@ const AppRouter = () => {
                     <Switch>
                         <Route exact path="/" component={ItemListComponent} />
                         <Route path="/items" component={ItemListComponent} />
-                        <Route path="/add-item" component={AddItemComponent} />
                         <Route path="/edit-item" component={EditItemComponent} />
                     </Switch>
                 </div>

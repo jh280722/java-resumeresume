@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const ITEM_API_BASE_URL = "http://localhost:8080/items";
+const BOX_API_BASE_URL = "http://localhost:8080/boxes"
 
 class ApiService{
     fetchItems(){
