@@ -40,7 +40,9 @@ public class Item {
     public static Item of(ItemRequest itemRequest) {
         return new Item(itemRequest.getType(), itemRequest.getName(), itemRequest.getValue(), itemRequest.getBox());
     }
-
+    public static Item of() {
+        return new Item(null,null,null,null);
+    }
     public static Item of(String type, String name, String value, Box box) {
         return new Item(type, name, value, box);
     }
