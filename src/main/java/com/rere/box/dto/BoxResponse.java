@@ -27,6 +27,10 @@ public class BoxResponse {
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public List<ItemResponse> getItems() {
         return items;
     }
