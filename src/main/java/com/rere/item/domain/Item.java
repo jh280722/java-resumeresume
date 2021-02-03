@@ -30,7 +30,9 @@ public class Item {
     @JsonManagedReference
     private Box box;
 
-    protected Item() {}
+    protected Item() {
+    }
+
     private Item(Long id, int seq, String type, String name, String value, Box box) {
         this.id = id;
         this.seq = seq;
@@ -49,7 +51,7 @@ public class Item {
     }
 
     public static Item of() {
-        return new Item(DEFAULT_SEQ, null,null,null,null);
+        return new Item(DEFAULT_SEQ, null, null, null, null);
     }
 
     public static Item of(int seq, String type, String name, String value, Box box) {
@@ -66,6 +68,10 @@ public class Item {
 
     public Long getId() {
         return id;
+    }
+
+    public int getSeq() {
+        return seq;
     }
 
     public String getName() {
@@ -100,7 +106,9 @@ public class Item {
         this.box = box;
     }
 
-    public void changeSeq(int seq) { this.seq = seq; }
+    public void changeSeq(int seq) {
+        this.seq = seq;
+    }
 
     public void changeItem(Item item) {
         this.seq = item.seq;

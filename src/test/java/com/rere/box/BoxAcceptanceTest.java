@@ -5,7 +5,6 @@ import com.rere.box.domain.Box;
 import com.rere.box.domain.BoxRepository;
 import com.rere.box.dto.BoxRequest;
 import com.rere.box.dto.BoxResponse;
-import com.rere.item.domain.Item;
 import com.rere.item.dto.ItemRequest;
 import com.rere.item.dto.ItemResponse;
 import io.restassured.RestAssured;
@@ -18,13 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.rere.item.ItemAcceptanceTest.아이템_등록되어_있음;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("아이템 관련 기능")
+@DisplayName("박스 관련 기능")
 public class BoxAcceptanceTest extends AcceptanceTest {
 
     @Autowired
@@ -34,9 +30,6 @@ public class BoxAcceptanceTest extends AcceptanceTest {
     private ItemResponse HMTextArea;
     private ItemRequest mainImage;
     private ItemRequest dateToday ;
-    private Item JHText1;
-    private Item HMTextArea1;
-    private List<Item> items;
     private BoxRequest box1;
     private BoxResponse box2;
 
@@ -46,26 +39,21 @@ public class BoxAcceptanceTest extends AcceptanceTest {
 
         Box box = boxes.save(Box.of("box"));
         // given
-        JHText = 아이템_등록되어_있음("text", "이름", "준호",box);
-        JHText1 = Item.of("text", "이름", "준호",box);
-        HMTextArea = 아이템_등록되어_있음("textArea", "자기소개", "나는 한민",box);
-        HMTextArea1 = Item.of("textArea", "자기소개", "나는 한민",box);
+        JHText = 아이템_등록되어_있음(0, "text", "이름", "준호",box);
+        HMTextArea = 아이템_등록되어_있음(0, "textArea", "자기소개", "나는 한민",box);
 
-        mainImage = new ItemRequest("image", "이미지", "temp.jpg",box);
-        dateToday = new ItemRequest("date", "날짜", "2021-01-17",box);
+        mainImage = new ItemRequest(0, "image", "이미지", "temp.jpg",box);
+        dateToday = new ItemRequest(0, "date", "날짜", "2021-01-17",box);
 
-        items= new ArrayList<Item>();
-        items.add(JHText1);
-        items.add(HMTextArea1);
-        box2= 박스_등록되어_있음(items);
-        box1= new BoxRequest("box1", items);
+        box2 = 박스_등록되어_있음("box2");
+        box1= new BoxRequest("box1");
     }
 
     @DisplayName("박스를 생성한다.")
     @Test
     void createItem() {
         // when
-        ExtractableResponse<Response> response = 박스_생성_요청(items);
+        ExtractableResponse<Response> response = 박스_생성_요청("box");
 
         // then
         박스_생성됨(response);
@@ -143,12 +131,12 @@ public class BoxAcceptanceTest extends AcceptanceTest {
                 .extract();
     }
 
-    public static BoxResponse 박스_등록되어_있음(List<Item>items) {
-        return 박스_생성_요청(items).as(BoxResponse.class);
+    public static BoxResponse 박스_등록되어_있음(String name) {
+        return 박스_생성_요청(name).as(BoxResponse.class);
     }
 
-    public static ExtractableResponse<Response> 박스_생성_요청(List<Item>items) {
-        BoxRequest boxRequest = new BoxRequest("box1", items);
+    public static ExtractableResponse<Response> 박스_생성_요청(String name) {
+        BoxRequest boxRequest = new BoxRequest(name);
 
         return RestAssured
                 .given().log().all()

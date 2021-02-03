@@ -5,6 +5,7 @@ import com.rere.item.domain.Item;
 
 public class ItemResponse {
     private Long id;
+    private int seq;
     private String type;
     private String name;
     private String value;
@@ -13,12 +14,9 @@ public class ItemResponse {
     public ItemResponse() {
     }
 
-    public ItemResponse(Long id) {
+    public ItemResponse(Long id, int seq, String type, String name, String value, Box box) {
         this.id = id;
-    }
-
-    public ItemResponse(Long id, String type, String name, String value, Box box) {
-        this.id = id;
+        this.seq = seq;
         this.type = type;
         this.name = name;
         this.value = value;
@@ -26,11 +24,15 @@ public class ItemResponse {
     }
 
     public static ItemResponse of(Item item) {
-        return new ItemResponse(item.getId(), item.getType(), item.getName(), item.getValue(), item.getBox());
+        return new ItemResponse(item.getId(), item.getSeq(), item.getType(), item.getName(), item.getValue(), item.getBox());
     }
 
     public Long getId() {
         return id;
+    }
+
+    public int getSeq() {
+        return seq;
     }
 
     public String getType() {
@@ -44,6 +46,7 @@ public class ItemResponse {
     public String getValue() {
         return value;
     }
+
 
     public Box getBox() {
         return box;

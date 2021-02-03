@@ -27,7 +27,7 @@ public class ItemRepositoryTest {
     @Test
     void save() {
         Box box = boxes.save(Box.of("box"));
-        final Item item = items.save(Item.of("text", "이름", "준호", box));
+        final Item item = items.save(Item.of(0, "text", "이름", "준호", box));
         assertThat(item.getId()).isNotNull();
         assertThat(item.getValue()).isEqualTo("준호");
     }
@@ -35,7 +35,7 @@ public class ItemRepositoryTest {
     @Test
     void findByType() {
         Box box = boxes.save(Box.of("box"));
-        items.save(Item.of("textArea", "이름", "준호", box));
+        items.save(Item.of(0, "textArea", "이름", "준호", box));
         final Item actual = items.findByType("textArea");
         assertThat(actual.getValue()).isEqualTo("준호");
     }
@@ -43,7 +43,7 @@ public class ItemRepositoryTest {
     @Test
     void identity() {
         Box box = boxes.save(Box.of("box"));
-        final Item item = items.save(Item.of("text", "이름", "준호", box));
+        final Item item = items.save(Item.of(0, "text", "이름", "준호", box));
         final Item item1 = items.findById(item.getId()).get();
         assertThat(item1 == item).isTrue();
     }
@@ -51,7 +51,7 @@ public class ItemRepositoryTest {
     @Test
     void update() {
         Box box = boxes.save(Box.of("box"));
-        final Item item1 = items.save(Item.of("textArea", "자기소개", "hi", box));
+        final Item item1 = items.save(Item.of(0, "textArea", "자기소개", "hi", box));
         item1.changeName("변경");
         final Item item2 = items.findByName("변경");
         assertThat(item2).isNotNull();

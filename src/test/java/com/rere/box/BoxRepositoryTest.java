@@ -19,9 +19,9 @@ public class BoxRepositoryTest {
     private ItemRepository items;
 
     @Test
-    void findById() {
+    void getItems() {
         Box box = boxes.findByName("box");
-        Item item = items.save(Item.of("text", "이름", "준호", box));
+        Item item = items.save(Item.of(0, "text", "이름", "준호", box));
         assertThat(box.getItems().size()).isEqualTo(2);
     }
 }
