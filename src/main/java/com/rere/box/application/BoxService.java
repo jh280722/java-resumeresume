@@ -38,8 +38,8 @@ public class BoxService {
 
     @Transactional
     public void deleteById(Long id) {
-        boxRepository.deleteById(id);
         itemService.deleteByBoxId(id);
+        boxRepository.deleteById(id);
     }
 
     public BoxResponse save(BoxRequest boxRequest) {

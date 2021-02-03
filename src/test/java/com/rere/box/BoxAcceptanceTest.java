@@ -30,6 +30,7 @@ public class BoxAcceptanceTest extends AcceptanceTest {
     private ItemResponse HMTextArea;
     private ItemRequest mainImage;
     private ItemRequest dateToday ;
+    private Box box;
     private BoxRequest box1;
     private BoxResponse box2;
 
@@ -37,7 +38,7 @@ public class BoxAcceptanceTest extends AcceptanceTest {
     public void setUp() {
         super.setUp();
 
-        Box box = boxes.save(Box.of("box"));
+        box = boxes.save(Box.of("box"));
         // given
         JHText = 아이템_등록되어_있음(0, "text", "이름", "준호",box);
         HMTextArea = 아이템_등록되어_있음(0, "textArea", "자기소개", "나는 한민",box);
@@ -73,7 +74,7 @@ public class BoxAcceptanceTest extends AcceptanceTest {
     @Test
     void deleteItem() {
         // when
-        ExtractableResponse<Response> response = 박스_삭제_요청(box2);
+        ExtractableResponse<Response> response = 박스_삭제_요청(BoxResponse.of(box));
 
         // then
         박스_삭제됨(response);
