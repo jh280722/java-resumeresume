@@ -8,7 +8,6 @@ import javax.persistence.*;
 
 @Entity
 public class Box {
-    public static final long DEFAULT_ID = 0L;
     public static final String DEFAULT_NAME = "";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +23,11 @@ public class Box {
     //Long docId;
 
     protected Box() {
+        this(DEFAULT_NAME);
+    }
+
+    public static Box of() {
+        return new Box();
     }
 
     private Box(String name) {
@@ -37,6 +41,7 @@ public class Box {
     public static Box of(String name) {
         return new Box(name);
     }
+
 
     public Long getId() {
         return id;

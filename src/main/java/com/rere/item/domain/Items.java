@@ -36,4 +36,12 @@ public class Items {
     public int size() {
         return items.size();
     }
+
+    public void add(Item item) {
+        items.add(item);
+    }
+
+    public void remove(Item item) {
+        items.remove(item);
+    }
 }

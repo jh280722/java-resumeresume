@@ -5,6 +5,7 @@ import com.rere.box.domain.Box;
 import com.rere.item.dto.ItemRequest;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class Item {
@@ -95,7 +96,11 @@ public class Item {
     }
 
     public void setBox(Box box) {
+        if (Objects.nonNull(this.box)) {
+            this.box.getItems().remove(this);
+        }
         this.box = box;
+        box.getItems().add(this);
     }
 
     public void changeValue(String value) {

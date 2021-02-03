@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class BoxService {
-    public static final String DEFAULT_NAME = "";
     private final BoxRepository boxRepository;
     private final ItemService itemService;
 
@@ -29,18 +28,18 @@ public class BoxService {
     }
 
     public BoxResponse findById(Long id) {
-        return BoxResponse.of(boxRepository.findById(id).orElse(Box.of(DEFAULT_NAME)));
+        return BoxResponse.of(boxRepository.findById(id).orElse(Box.of()));
     }
 
     public void updateName(Long id, BoxRequest boxRequest) {
-        Box box = boxRepository.findById(id).orElse(Box.of(DEFAULT_NAME));
+        Box box = boxRepository.findById(id).orElse(Box.of());
         box.changeName(boxRequest.getName());
     }
 
     @Transactional
     public void deleteById(Long id) {
-        boxRepository.deleteById(id);
         itemService.deleteByBoxId(id);
+        boxRepository.deleteById(id);
     }
 
     public BoxResponse save(BoxRequest boxRequest) {
