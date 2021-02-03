@@ -33,6 +33,7 @@
 - 새 document를 만들때 default document로 등록할 수 있다.
 
 ### Document
+- id, name, sortation_id 
 - box의 집합으로 하나의 문서이다.
     - sortation 내 고유한 이름을 가진다.
       - 생성시 중복 검사를 하여 자동으로 

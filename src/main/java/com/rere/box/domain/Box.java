@@ -1,5 +1,6 @@
 package com.rere.box.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.rere.box.dto.BoxRequest;
 import com.rere.item.domain.Item;
 import com.rere.item.domain.Items;
@@ -20,6 +21,7 @@ public class Box {
     private String name;
 
     @Embedded
+    @JsonBackReference
     private Items items;
 
     //Long docId;
