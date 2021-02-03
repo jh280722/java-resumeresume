@@ -1,6 +1,7 @@
 package com.rere.item.ui;
 
 import com.rere.item.application.ItemService;
+import com.rere.item.domain.Item;
 import com.rere.item.dto.ItemRequest;
 import com.rere.item.dto.ItemResponse;
 import org.springframework.http.MediaType;
@@ -38,7 +39,7 @@ public class ItemController {
 
     @PutMapping(value="/{id}")
     public ResponseEntity updateItem(@RequestBody ItemRequest itemRequest,@PathVariable Long id){
-        itemService.updateName(id, itemRequest.getName());
+        itemService.updateItem(id, Item.of(itemRequest));
         return ResponseEntity.ok().build();
     }
 
