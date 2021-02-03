@@ -1,6 +1,5 @@
 package com.rere.box.application;
 
-import com.rere.box.dao.BoxDao;
 import com.rere.box.domain.Box;
 import com.rere.box.dto.BoxRequest;
 import com.rere.box.dto.BoxResponse;

@@ -80,4 +80,19 @@ public class Item {
     public void setBox(Box box) {
         this.box = box;
     }
+
+    public void changeValue(String value) {
+        this.value = value;
+    }
+
+    public void changeBox(Box box) {
+        this.box = box;
+    }
+
+    public void changeItem(Item item) {
+        this.type = item.type;
+        this.name = item.name;
+        this.value = item.value;
+        this.box = item.box;
+    }
 }

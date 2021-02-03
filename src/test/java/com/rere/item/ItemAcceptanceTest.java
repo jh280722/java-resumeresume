@@ -34,7 +34,7 @@ public class ItemAcceptanceTest extends AcceptanceTest {
     public void setUp() {
         super.setUp();
 
-        Box box = boxes.save(new Box("box"));
+        Box box = boxes.save(Box.of("box"));
         // given
         JHText = 아이템_등록되어_있음("text", "이름", "준호", box);
         HMTextArea = 아이템_등록되어_있음("textArea", "자기소개", "나는 한민", box);
@@ -46,7 +46,7 @@ public class ItemAcceptanceTest extends AcceptanceTest {
     @DisplayName("아이템을 생성한다.")
     @Test
     void createItem() {
-        Box box = boxes.save(new Box("box"));
+        Box box = boxes.save(Box.of("box"));
         // when
         ExtractableResponse<Response> response = 아이템_생성_요청("text", "이름", "준호", box);
 
