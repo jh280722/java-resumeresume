@@ -1,13 +1,11 @@
 package com.rere.item.dao;
 
+import com.rere.box.domain.Box;
 import com.rere.item.domain.Item;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
 import java.util.List;
 
 @Repository
@@ -23,28 +21,12 @@ public class ItemDao {
             resultSet.getString("type"),
             resultSet.getString("name"),
             resultSet.getString("value"),
-            resultSet.getLong("box_id")
+            Box.of(resultSet.getLong("box_id"))
     );
-
-    public Item save(Item item) {
-        String sql = "insert into item (type, name, value, box_id) values (? , ?, ?, ?)";
-
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
-            ps.setString(1, item.getType());
-            ps.setString(2, item.getName());
-            ps.setString(3, item.getValue());
-            ps.setLong(4, item.getBoxId());
-            return ps;
-        }, keyHolder);
-
-        return Item.of(keyHolder.getKey().longValue(), item.getType(), item.getName(), item.getValue(), item.getBoxId());
-    }
 
     public void update(Long id, Item updateItem) {
         String sql = "update item set type=?, name=?, value=?, box_id=? where id = ?";
-        jdbcTemplate.update(sql, updateItem.getType(), updateItem.getName(), updateItem.getValue(), updateItem.getBoxId(), id);
+        jdbcTemplate.update(sql, updateItem.getType(), updateItem.getName(), updateItem.getValue(), updateItem.getBox(), id);
     }
 
     public List<Item> findAll() {

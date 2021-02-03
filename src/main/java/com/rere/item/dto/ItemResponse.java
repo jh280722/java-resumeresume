@@ -1,5 +1,6 @@
 package com.rere.item.dto;
 
+import com.rere.box.domain.Box;
 import com.rere.item.domain.Item;
 
 public class ItemResponse {
@@ -7,7 +8,7 @@ public class ItemResponse {
     private String type;
     private String name;
     private String value;
-    private Long boxId;
+    private Box box;
 
     public ItemResponse() {
     }
@@ -16,16 +17,16 @@ public class ItemResponse {
         this.id = id;
     }
 
-    public ItemResponse(Long id, String type, String name, String value, Long boxId) {
+    public ItemResponse(Long id, String type, String name, String value, Box box) {
         this.id = id;
         this.type = type;
         this.name = name;
         this.value = value;
-        this.boxId = boxId;
+        this.box = box;
     }
 
     public static ItemResponse of(Item item) {
-        return new ItemResponse(item.getId(), item.getType(), item.getName(), item.getValue(), item.getBoxId());
+        return new ItemResponse(item.getId(), item.getType(), item.getName(), item.getValue(), item.getBox());
     }
 
     public Long getId() {
@@ -44,7 +45,7 @@ public class ItemResponse {
         return value;
     }
 
-    public Long getBoxId() {
-        return boxId;
+    public Box getBox() {
+        return box;
     }
 }

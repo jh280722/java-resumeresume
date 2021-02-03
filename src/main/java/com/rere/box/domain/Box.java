@@ -3,16 +3,29 @@ package com.rere.box.domain;
 import com.rere.box.dto.BoxRequest;
 import com.rere.item.domain.Item;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Box {
     public static final long DEFAULT_ID = 0L;
-    Long id;
-    List<Item> items;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column
+    private String name;
+
+    @OneToMany(mappedBy = "box")
+    private List<Item> items;
     //Long docId;
 
-    public Box() {
+    protected Box() {
+    }
+
+    public Box(String name) {
+        this.name = name;
     }
 
     private Box(Long id) {
