@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
-class ItemlistComponent extends Component{
+class TempComponent extends Component{
 
     /*
     컴포넌트 생성기 초기화하는 부분, 마운트되기 전에 호출된다.
@@ -17,7 +17,8 @@ class ItemlistComponent extends Component{
         super(props);
 
         this.state = {
-            boxes: [],
+            box: [],
+            items: [],
             boxName : '',
             type:'',
             name:'',
@@ -44,10 +45,11 @@ class ItemlistComponent extends Component{
     */
 
     reloadItemList = () => {
-        ApiService.fetchBoxes()
+        ApiService.fetchBoxesByID(this.props.boxID)
         .then(res => {
             this.setState({
-                boxes: res.data,
+                box: res.data,
+                items: res.data.items,
             })
         })
         .catch(err => {
@@ -68,18 +70,18 @@ class ItemlistComponent extends Component{
         })
     }
 
-    deleteBox = (boxID) => {
-        ApiService.deleteBox(boxID)
-        .then(res => {
-            this.setState({
-                message: 'Box Deleted Successfully.'
-            });
-            this.reloadItemList();
-        })
-        .catch(err => {
-            console.log('deleteBoxList() Error! ', err);
-        })
-    }
+    // deleteBox = (boxID) => {
+    //     ApiService.deleteBox(boxID)
+    //     .then(res => {
+    //         this.setState({
+    //             message: 'Box Deleted Successfully.'
+    //         });
+    //         this.reloadItemList();
+    //     })
+    //     .catch(err => {
+    //         console.log('deleteBoxList() Error! ', err);
+    //     })
+    // }
 
     editItem = (ID) => {
         window.localStorage.setItem("itemID", ID);
@@ -155,9 +157,8 @@ class ItemlistComponent extends Component{
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Paper>
-                        {this.state.boxes.map((box) =>
-                        <div key={box.id}>
-                            <h2>{box.name}</h2>
+                        <div key={this.state.box.id}>
+                            <h2>{this.state.box.name}</h2>
                             <table>
                                 <thead>
                                     <tr>
@@ -169,7 +170,7 @@ class ItemlistComponent extends Component{
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {box.items.map( item =>
+                                    {this.state.items.map(item =>
                                         <tr key={item.key}>
                                             <td>{item.type}</td>
                                             <td>{item.name}</td>
@@ -195,22 +196,18 @@ class ItemlistComponent extends Component{
                                             <input type="text" placeholder="input seq" name={"seq"} value={this.state.seq} onChange={this.onChange}/>
                                         </td>
                                         <td>
-                                            <button onClick={this.saveItem} data-boxid={box.id} data-boxname={box.name}>Save</button>
+                                            <button onClick={this.saveItem} data-boxid={this.state.box.id} data-boxname={this.state.box.name}>Save</button>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <button onClick={()=>this.deleteBox(box.id)}>Delete</button>
                         </div>
-                        )}
                     </Paper>
                 </Grid>
-                <input type="text" placeholder="box name" name={"boxName"} value={this.state.boxName} onChange={this.onChange}/>
-                <Button variant="contained" onClick={this.addBox}>박스 추가</Button>
             </Grid>
         );
     }
 
 }
 
-export default ItemlistComponent;
+export default TempComponent;
