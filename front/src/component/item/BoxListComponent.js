@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import TempComponent from './TempComponent';
+import ItemlistComponent from './ItemListComponent';
 import ApiService from '../../ApiService';
 
 
@@ -13,7 +13,7 @@ function BoxListComponent(){
     useEffect(() => {
         ApiService.fetchBoxes()
         .then(res => {
-            setBoxes(res.data)
+            setBoxes(res.data);
         })
         .catch(err => {
             console.log('reloadBoxList() Error! ',err);
@@ -57,7 +57,7 @@ function BoxListComponent(){
             {boxes.map(box=>
                 <>
                     <button onClick={()=>deleteBox(box.id)}>박스 삭제</button>
-                    <TempComponent boxID={box.id.toString()}/>
+                    <ItemlistComponent boxID={box.id.toString()}/>
                 </>
             )}
             <input type="text" placeholder="box name" name={"setBoxName"} value={boxName} onChange={onChangeBoxName}/>

@@ -3,6 +3,11 @@ import ApiService from '../../ApiService';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 class TempComponent extends Component{
 
@@ -177,14 +182,31 @@ class TempComponent extends Component{
                                             <td>{item.value}</td>
                                             <td>{item.seq}</td>
                                             <td>
-                                                <button onClick={()=>this.editItem(item.id)}>Edit</button>
                                                 <button onClick={()=>this.deleteItem(item.id)}>Delete</button>
                                             </td>
                                         </tr>
                                         )}
                                     <tr>
                                         <td>
-                                            <input type="text" placeholder="input item type" name={"type"} value={this.state.type} onChange={this.onChange} />
+                                            <FormControl variant="outlined">
+                                                <Select
+                                                    name={"type"}
+                                                    value={this.state.type}
+                                                    displayEmpty
+                                                    onChange={this.onChange}
+                                                    inputProps={{ 'aria-label': 'Without label' }}
+                                                >   
+                                                    <MenuItem value="">
+                                                        <em>None</em>
+                                                    </MenuItem>
+                                                    <MenuItem value={"text"}>text</MenuItem>
+                                                    <MenuItem value={"textArea"}>textArea</MenuItem>
+                                                    <MenuItem value={"date"}>date</MenuItem>
+                                                    <MenuItem value={"image"}>image</MenuItem>
+                                                    <MenuItem value={"period"}>period</MenuItem>
+                                                </Select>
+                                            </FormControl>
+                                            {/* <input type="text" placeholder="input item type" name={"type"} value={this.state.type} onChange={this.onChange} /> */}
                                         </td>
                                         <td>
                                             <input type="text" placeholder="input item name" name={"name"} value={this.state.name} onChange={this.onChange} />
