@@ -1,4 +1,4 @@
-package com.rere.box;
+package com.rere.document;
 
 import com.rere.AcceptanceTest;
 import com.rere.box.domain.Box;
@@ -7,6 +7,8 @@ import com.rere.box.dto.BoxRequest;
 import com.rere.box.dto.BoxResponse;
 import com.rere.document.domain.Document;
 import com.rere.document.domain.DocumentRepository;
+import com.rere.document.dto.DocumentRequest;
+import com.rere.document.dto.DocumentResponse;
 import com.rere.item.dto.ItemRequest;
 import com.rere.item.dto.ItemResponse;
 import io.restassured.RestAssured;
@@ -19,142 +21,144 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import javax.print.Doc;
-
+import static com.rere.box.BoxAcceptanceTest.박스_등록되어_있음;
 import static com.rere.item.ItemAcceptanceTest.아이템_등록되어_있음;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("박스 관련 기능")
-public class BoxAcceptanceTest extends AcceptanceTest {
+@DisplayName("문서 관련 기능")
+public class DocumentAcceptanceTest extends AcceptanceTest {
 
     @Autowired
     BoxRepository boxes;
-    @Autowired
-    DocumentRepository documents;
 
+    @Autowired
+    private DocumentRepository documents;
+
+    private BoxRequest box1;
+    private DocumentRequest document1;
+    private BoxResponse box2;
+    private DocumentResponse document2;
     private ItemResponse JHText;
     private ItemResponse HMTextArea;
     private ItemRequest mainImage;
     private ItemRequest dateToday ;
     private Box box;
-    private BoxRequest box1;
-    private BoxResponse box2;
     @BeforeEach
     public void setUp() {
         super.setUp();
+
+//        Box box = boxes.save(Box.of("box"));
         Document document = documents.save(Document.of("document"));
-        box = boxes.save(Box.of("box",document));
         // given
+        box=boxes.save(Box.of("box",document));
         JHText = 아이템_등록되어_있음(0, "text", "이름", "준호",box);
         HMTextArea = 아이템_등록되어_있음(0, "textArea", "자기소개", "나는 한민",box);
 
-        mainImage = new ItemRequest(0, "image", "이미지", "temp.jpg",box);
-        dateToday = new ItemRequest(0, "date", "날짜", "2021-01-17",box);
         box2 = 박스_등록되어_있음("box2",document);
-        box1= new BoxRequest("box1",document);
+        document2 = 문서_등록되어_있음("document2");
+        document1 = new DocumentRequest("document1");
     }
 
-    @DisplayName("박스를 생성한다.")
+    @DisplayName("문서를 생성한다.")
     @Test
     void createItem() {
         // when
-        Document document = documents.save(Document.of("document"));
-        ExtractableResponse<Response> response = 박스_생성_요청("box",document);
+        ExtractableResponse<Response> response = 문서_생성_요청("document");
 
         // then
-        박스_생성됨(response);
+        문서_생성됨(response);
     }
 
-    @DisplayName("박스를 조회한다.")
+    @DisplayName("문서를 조회한다.")
     @Test
     void getItem() {
         // when
-        ExtractableResponse<Response> response = 박스_조회_요청(box2);
+        ExtractableResponse<Response> response = 문서_조회_요청(document2);
 
         // then
-        박스_응답됨(response, box2);
+        문서_응답됨(response, document2);
     }
 
-    @DisplayName("박스를 삭제한다.")
+    @DisplayName("문서를 삭제한다.")
     @Test
     void deleteItem() {
         // when
-        ExtractableResponse<Response> response = 박스_삭제_요청(BoxResponse.of(box));
+        ExtractableResponse<Response> response = 문서_삭제_요청(document2);
 
         // then
-        박스_삭제됨(response);
+        문서_삭제됨(response);
     }
 
-    @DisplayName("박스를 수정한다.")
+    @DisplayName("문서를 수정한다.")
     @Test
     void updateItem() {
         // when
-        ExtractableResponse<Response> response = 박스_수정_요청(box2, box1);
+        ExtractableResponse<Response> response = 문서_수정_요청(document2, document1);
 
         // then
-        박스_수정됨(response, box2);
+        문서_수정됨(response, document2);
     }
 
-    private ExtractableResponse<Response> 박스_수정_요청(BoxResponse boxResponse, BoxRequest params) {
+    private ExtractableResponse<Response> 문서_수정_요청(DocumentResponse documentResponse, DocumentRequest params) {
         return RestAssured
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(params)
-                .when().put("/boxes/" + boxResponse.getId())
+                .when().put("/documents/" + documentResponse.getId())
                 .then().log().all()
                 .extract();
     }
 
 
-    private ExtractableResponse<Response> 박스_삭제_요청(BoxResponse boxResponse) {
+    private ExtractableResponse<Response> 문서_삭제_요청(DocumentResponse documentResponse) {
         return RestAssured
                 .given().log().all()
-                .when().delete("/boxes/" + boxResponse.getId())
+                .when().delete("/documents/" + documentResponse.getId())
                 .then().log().all()
                 .extract();
     }
 
-    private void 박스_삭제됨(ExtractableResponse<Response> response) {
+    private void 문서_삭제됨(ExtractableResponse<Response> response) {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 
-    public static void 박스_응답됨(ExtractableResponse<Response> response, BoxResponse boxResponse) {
+    public static void 문서_응답됨(ExtractableResponse<Response> response, DocumentResponse documentResponse) {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        BoxResponse resultResponse = response.as(BoxResponse.class);
-        assertThat(resultResponse.getId()).isEqualTo(boxResponse.getId());
+        DocumentResponse resultResponse = response.as(DocumentResponse.class);
+        assertThat(resultResponse.getId()).isEqualTo(documentResponse.getId());
     }
 
-    private void 박스_수정됨(ExtractableResponse<Response> response, BoxResponse textAreaHM) {
+    private void 문서_수정됨(ExtractableResponse<Response> response, DocumentResponse textAreaHM) {
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
-    public static ExtractableResponse<Response> 박스_조회_요청(BoxResponse boxResponse) {
+    public static ExtractableResponse<Response> 문서_조회_요청(DocumentResponse documentResponse) {
         return RestAssured
                 .given().log().all()
-                .when().get("/boxes/{boxId}", boxResponse.getId())
+                .when().get("/documents/{documentId}", documentResponse.getId())
                 .then().log().all()
                 .extract();
     }
 
-    public static BoxResponse 박스_등록되어_있음(String name,Document document) {
-        return 박스_생성_요청(name,document).as(BoxResponse.class);
+    public static DocumentResponse 문서_등록되어_있음(String name) {
+        return 문서_생성_요청(name).as(DocumentResponse.class);
     }
 
-    public static ExtractableResponse<Response> 박스_생성_요청(String name, Document document) {
-        BoxRequest boxRequest = new BoxRequest(name,document);
+    public static ExtractableResponse<Response> 문서_생성_요청(String name) {
+        DocumentRequest documentRequest = new DocumentRequest(name);
 
         return RestAssured
                 .given().log().all()
-                .body(boxRequest)
+                .body(documentRequest)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/boxes")
+                .when().post("/documents")
                 .then().log().all()
                 .extract();
     }
 
 
-    public static void 박스_생성됨(ExtractableResponse response) {
+    public static void 문서_생성됨(ExtractableResponse response) {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(response.header("Location")).isNotBlank();
     }

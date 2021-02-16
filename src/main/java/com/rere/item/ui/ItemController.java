@@ -22,7 +22,7 @@ public class ItemController {
 
     @PostMapping
     public ResponseEntity<ItemResponse> createItem(@RequestBody ItemRequest itemRequest) {
-        ItemResponse itemResponse =itemService.save(itemRequest);;
+        ItemResponse itemResponse = itemService.save(itemRequest);
         return ResponseEntity.created(URI.create("/items/" + itemResponse.getId()))
                 .body(itemResponse);
     }
@@ -37,8 +37,8 @@ public class ItemController {
         return ResponseEntity.ok().body(itemService.findById(id));
     }
 
-    @PutMapping(value="/{id}")
-    public ResponseEntity updateItem(@RequestBody ItemRequest itemRequest,@PathVariable Long id){
+    @PutMapping(value = "/{id}")
+    public ResponseEntity updateItem(@RequestBody ItemRequest itemRequest, @PathVariable Long id) {
         itemService.updateItem(id, Item.of(itemRequest));
         return ResponseEntity.ok().build();
     }

@@ -3,6 +3,8 @@ package com.rere.item;
 import com.rere.AcceptanceTest;
 import com.rere.box.domain.Box;
 import com.rere.box.domain.BoxRepository;
+import com.rere.document.domain.Document;
+import com.rere.document.domain.DocumentRepository;
 import com.rere.item.domain.ItemRepository;
 import com.rere.item.dto.ItemRequest;
 import com.rere.item.dto.ItemResponse;
@@ -29,12 +31,13 @@ public class ItemAcceptanceTest extends AcceptanceTest {
     private ItemRepository items;
     @Autowired
     private BoxRepository boxes;
-
+    @Autowired
+    DocumentRepository documents;
     @BeforeEach
     public void setUp() {
         super.setUp();
-
-        Box box = boxes.save(Box.of("box"));
+        Document document = documents.save(Document.of("document"));
+        Box box = boxes.save(Box.of("box",document));
         // given
         JHText = 아이템_등록되어_있음(0, "text", "이름", "준호", box);
         HMTextArea = 아이템_등록되어_있음(0,"textArea", "자기소개", "나는 한민", box);
@@ -46,7 +49,8 @@ public class ItemAcceptanceTest extends AcceptanceTest {
     @DisplayName("아이템을 생성한다.")
     @Test
     void createItem() {
-        Box box = boxes.save(Box.of("box"));
+        Document document = documents.save(Document.of("document"));
+        Box box = boxes.save(Box.of("box",document));
         // when
         ExtractableResponse<Response> response = 아이템_생성_요청(0, "text", "이름", "준호", box);
 
