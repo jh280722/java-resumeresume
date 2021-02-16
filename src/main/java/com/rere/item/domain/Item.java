@@ -1,6 +1,5 @@
 package com.rere.item.domain;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.rere.box.domain.Box;
 import com.rere.item.dto.ItemRequest;
 
@@ -28,7 +27,7 @@ public class Item {
 
     @ManyToOne
     @JoinColumn(name = "box_id")
-    @JsonManagedReference
+//    @JsonManagedReference(value="item_box")
     private Box box;
 
     protected Item() {
@@ -91,16 +90,16 @@ public class Item {
         return box;
     }
 
-    public void changeName(String name) {
-        this.name = name;
-    }
-
     public void setBox(Box box) {
         if (Objects.nonNull(this.box)) {
             this.box.getItems().remove(this);
         }
         this.box = box;
         box.getItems().add(this);
+    }
+
+    public void changeName(String name) {
+        this.name = name;
     }
 
     public void changeValue(String value) {
