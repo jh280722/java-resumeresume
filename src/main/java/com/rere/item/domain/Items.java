@@ -14,7 +14,8 @@ public class Items {
     @OneToMany(mappedBy = "box")
     private List<Item> items = new ArrayList<>();
 
-    protected Items() {}
+    protected Items() {
+    }
 
     private Items(List<Item> items) {
         this.items = items;

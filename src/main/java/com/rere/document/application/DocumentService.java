@@ -1,8 +1,6 @@
 package com.rere.document.application;
 
 import com.rere.box.application.BoxService;
-import com.rere.box.domain.Box;
-import com.rere.box.dto.BoxResponse;
 import com.rere.document.domain.Document;
 import com.rere.document.domain.DocumentRepository;
 import com.rere.document.dto.DocumentRequest;
@@ -21,7 +19,7 @@ public class DocumentService {
     private final BoxService boxService;
     private final ItemService itemService;
 
-    public DocumentService(DocumentRepository documentRepository,BoxService boxService, ItemService itemService) {
+    public DocumentService(DocumentRepository documentRepository, BoxService boxService, ItemService itemService) {
         this.documentRepository = documentRepository;
         this.boxService = boxService;
         this.itemService = itemService;
@@ -36,6 +34,7 @@ public class DocumentService {
     public DocumentResponse findById(Long id) {
         return DocumentResponse.of(documentRepository.findById(id).orElse(Document.of()));
     }
+
     public void updateName(Long id, DocumentRequest documentRequest) {
         Document document = documentRepository.findById(id).orElse(Document.of());
         document.changeName(documentRequest.getName());
@@ -43,9 +42,9 @@ public class DocumentService {
 
     @Transactional
     public void deleteById(Long id) {
-        documentRepository.deleteById(id);
-        boxService.deleteByDocumentId(id);
         itemService.deleteByBoxId(id);
+        boxService.deleteByDocumentId(id);
+        documentRepository.deleteById(id);
     }
 
     public DocumentResponse save(DocumentRequest documentRequest) {

@@ -1,6 +1,5 @@
 package com.rere.document.dto;
 
-import com.rere.box.domain.Box;
 import com.rere.box.dto.BoxResponse;
 import com.rere.document.domain.Document;
 
@@ -23,10 +22,12 @@ public class DocumentResponse {
     public static DocumentResponse of(Document document) {
         return new DocumentResponse(document.getId(), document.getName(), document.getBoxes().getBoxResponses());
     }
+
     public Long getId() {
         return id;
     }
-    public String getName(){
+
+    public String getName() {
         return name;
     }
 

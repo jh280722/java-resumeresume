@@ -19,7 +19,7 @@ public class BoxResponse {
         this.id = id;
         this.name = name;
         this.items = items;
-        this.document=document;
+        this.document = document;
     }
 
     public static BoxResponse of(Box box) {
@@ -29,7 +29,10 @@ public class BoxResponse {
     public Long getId() {
         return id;
     }
-    public String getName(){return name;}
+
+    public String getName() {
+        return name;
+    }
 
     public List<ItemResponse> getItems() {
         return items;
