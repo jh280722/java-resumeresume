@@ -20,9 +20,9 @@ public class ItemsTest {
         ));
         items.updateSeq(2L,3);
 
-        assertThat(items.findBySeq(0).getId()).isEqualTo(5L);
-        assertThat(items.findBySeq(1).getId()).isEqualTo(4L);
-        assertThat(items.findBySeq(2).getId()).isEqualTo(3L);
-        assertThat(items.findBySeq(3).getId()).isEqualTo(2L);
+        assertThat(items.findById(5L).getSeq()).isEqualTo(0);
+        assertThat(items.findById(4L).getSeq()).isEqualTo(1);
+        assertThat(items.findById(3L).getSeq()).isEqualTo(2);
+        assertThat(items.findById(2L).getSeq()).isEqualTo(3);
     }
 }

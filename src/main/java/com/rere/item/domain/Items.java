@@ -6,7 +6,6 @@ import javax.persistence.Embeddable;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +32,6 @@ public class Items {
 
     public List<ItemResponse> getItemResponses() {
         return items.stream()
-                .sorted(Comparator.comparing(Item::getSeq))
                 .map(ItemResponse::of)
                 .collect(Collectors.toList());
     }
@@ -64,11 +62,11 @@ public class Items {
 
         items.stream()
                 .filter(item -> item.getSeq() > originSeq)
-                .forEach(item -> item.decreaseSeq());
+                .forEach(item -> item.decreaseSeq(item.getSeq()));
 
         items.stream()
                 .filter(item -> item.getSeq() >= updateSeq)
-                .forEach(item -> item.increaseSeq());
+                .forEach(item -> item.increaseSeq(item.getSeq()));
 
         updateItem.changeSeq(updateSeq);
     }
@@ -79,5 +77,12 @@ public class Items {
                 .findFirst()
                 .orElse(null);
 
+    }
+
+    public Item findById(Long id) {
+        return items.stream()
+                .filter(item -> item.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 }

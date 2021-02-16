@@ -50,6 +50,7 @@ public class BoxService {
         return BoxResponse.of(boxRepository.save(Box.of(boxRequest.getName(), boxRequest.getDocument())));
     }
 
+    @Transactional
     public BoxResponse changeItemSeq(Long id, Long itemId, int seq) {
         boxRepository.findById(id)
                 .orElse(Box.of())

@@ -19,8 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import javax.print.Doc;
-
 import static com.rere.item.ItemAcceptanceTest.아이템_등록되어_있음;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -52,6 +50,24 @@ public class BoxAcceptanceTest extends AcceptanceTest {
         dateToday = new ItemRequest(0, "date", "날짜", "2021-01-17",box);
         box2 = 박스_등록되어_있음("box2",document);
         box1= new BoxRequest("box1",document);
+    }
+
+    @DisplayName("아이템을 드래그한다.")
+    @Test
+    void dragItem() {
+
+        Document document = documents.save(Document.of("document"));
+        Box box = boxes.findByName("boxData");
+
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().put("/boxes/drag/" + box.getId() + "?itemId={itemId}&seq={seq}", 2,0)
+                .then().log().all()
+                .extract();
+        boxes.flush();
+        박스_조회_요청(response.as(BoxResponse.class));
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
     @DisplayName("박스를 생성한다.")

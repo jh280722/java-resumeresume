@@ -122,11 +122,11 @@ public class Item {
         this.box = item.box;
     }
 
-    public void increaseSeq() {
-        this.seq++;
+    public void increaseSeq(int seq) {
+        this.seq = seq + 1;
     }
 
-    public void decreaseSeq() {
-        this.seq--;
+    public void decreaseSeq(int seq) {
+        this.seq = seq - 1;
     }
 }
