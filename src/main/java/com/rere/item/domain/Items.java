@@ -5,6 +5,7 @@ import com.rere.item.dto.ItemResponse;
 import javax.persistence.Embeddable;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +30,7 @@ public class Items {
 
     public List<ItemResponse> getItemResponses() {
         return items.stream()
+                .sorted(Comparator.comparing(Item::getSeq))
                 .map(ItemResponse::of)
                 .collect(Collectors.toList());
     }
