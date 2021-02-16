@@ -42,8 +42,8 @@ class ApiService{
         return axios.post(BOX_API_BASE_URL,box);
     }
 
-    editBox(box){
-        return axios.put(BOX_API_BASE_URL + '/' + box.id, box);
+    dragItem(box, itemId, seq){
+        return axios.put(BOX_API_BASE_URL + '/drag/' + box.id, itemId, seq);
     }
 }
 

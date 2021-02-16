@@ -20,6 +20,7 @@ function ItemlistComponent(props){
         seq:'',
     });
     const [btnState, setBtnState] = useState(false);
+    const [grab, setGrab] = useState(null);
 
     useEffect(() => {
         ApiService.fetchBoxesByID(props.boxID)
@@ -87,6 +88,30 @@ function ItemlistComponent(props){
         });
     }
 
+    const _onDragOver = e => {
+        e.preventDefault();
+    }
+
+    const _onDragStart = e => {
+        setGrab(e.target);
+        e.dataTransfer.effectAllowed = "move";
+        e.dataTransfer.setData("text/html", e.target);
+    }
+
+    const _onDragEnd = e => {
+        e.dataTransfer.dropEffect = "move";
+    }
+
+    const _onDrop = e => {
+        try{
+            let grabPosition = Number(grab.dataset.id);
+            let targetPosition = Number(e.currentTarget.dataset.position);
+            ApiService.dragItem(state.box, grabPosition, targetPosition);
+        } catch(e){
+            console.log(e);
+        }
+    }
+
     return(
         <>
             <Grid container spacing={2}>
@@ -95,18 +120,18 @@ function ItemlistComponent(props){
                             <div key={state.box.id}>
                                 <h2>{state.box.name}</h2>
                                 <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Type</th>
-                                            <th>Name</th>
-                                            <th>Value</th>
-                                            <th>Seq</th>
-                                            <th>Edit</th>
-                                        </tr>
-                                    </thead>
                                     <tbody>
                                         {state.items.map(item =>
-                                            <tr key={item.key}>
+                                            <tr 
+                                                draggable
+                                                onDragOver={_onDragOver}
+                                                onDragStart={_onDragStart}
+                                                onDragEnd={_onDragEnd}
+                                                onDrop={_onDrop}
+                                                key={item.id}
+                                                data-id={item.id}
+                                                data-position={item.seq}
+                                            >
                                                 <td>{item.type}</td>
                                                 <td>{item.name}</td>
                                                 <td>{item.value}</td>
@@ -136,20 +161,24 @@ function ItemlistComponent(props){
                                                         <MenuItem value={"period"}>period</MenuItem>
                                                     </Select>
                                                 </FormControl>
-                                                {/* <input type="text" placeholder="input item type" name={"type"} value={this.state.type} onChange={this.onChange} /> */}
                                             </td>
-                                            <td>
-                                                <input type="text" placeholder="input item name" name={"name"} value={state.name} onChange={onChange} />
-                                            </td>
-                                            <td>
-                                                <input type="text" placeholder="input item value" name={"value"} value={state.value} onChange={onChange}/>
-                                            </td>
-                                            <td>
-                                                <input type="text" placeholder="input seq" name={"seq"} value={state.seq} onChange={onChange}/>
-                                            </td>
-                                            <td>
-                                                <button onClick={saveItem} data-boxid={state.box.id} data-boxname={state.box.name}>Save</button>
-                                            </td>
+                                            {{
+                                                text : (<>
+                                                    <td>
+                                                        <input type="text" placeholder="input item name" name={"name"} value={state.name} onChange={onChange} />
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" placeholder="input item value" name={"value"} value={state.value} onChange={onChange}/>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" placeholder="input seq" name={"seq"} value={state.seq} onChange={onChange}/>
+                                                    </td>
+                                                    <td>
+                                                        <button onClick={saveItem} data-boxid={state.box.id} data-boxname={state.box.name}>Save</button>
+                                                    </td>
+                                                </>),
+                                                textArea : <p>textArea</p>
+                                            }[state.type]}
                                         </tr>
                                     </tbody>
                                 </table>
