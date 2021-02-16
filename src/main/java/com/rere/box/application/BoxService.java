@@ -49,4 +49,12 @@ public class BoxService {
     public BoxResponse save(BoxRequest boxRequest) {
         return BoxResponse.of(boxRepository.save(Box.of(boxRequest.getName(), boxRequest.getDocument())));
     }
+
+    public BoxResponse changeItemSeq(Long id, Long itemId, int seq) {
+        boxRepository.findById(id)
+                .orElse(Box.of())
+                .getItems()
+                .updateSeq(itemId, seq);
+        return BoxResponse.of(boxRepository.findById(id).orElse(Box.of()));
+    }
 }

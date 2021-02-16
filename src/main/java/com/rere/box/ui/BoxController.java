@@ -47,4 +47,11 @@ public class BoxController {
         boxService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping(value = "/drag/{id}")
+    public ResponseEntity<BoxResponse> dragItem(@PathVariable Long id,
+                                                @RequestParam("itemId") Long itemId,
+                                                @RequestParam("seq") int seq) {
+        return ResponseEntity.ok().body(boxService.changeItemSeq(id,  itemId,  seq));
+    }
 }

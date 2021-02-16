@@ -60,4 +60,10 @@ public class ItemService {
     public void deleteByBoxId(Long boxId) {
         itemRepository.deleteByBoxId(boxId);
     }
+
+    public void updateSeq(Long id, int seq){
+        Item item = itemRepository.findById(id).orElse(null);
+        item.changeSeq(seq);
+
+    }
 }
