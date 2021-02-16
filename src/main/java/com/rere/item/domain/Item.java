@@ -121,4 +121,12 @@ public class Item {
         this.value = item.value;
         this.box = item.box;
     }
+
+    public void increaseSeq() {
+        this.seq++;
+    }
+
+    public void decreaseSeq() {
+        this.seq--;
+    }
 }
