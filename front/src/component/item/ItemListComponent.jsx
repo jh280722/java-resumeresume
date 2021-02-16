@@ -87,21 +87,6 @@ function ItemlistComponent(props){
         });
     }
 
-    const addBox = (e) =>{
-        e.preventDefault();
-        let box ={
-            name: state.boxName
-        }
-        ApiService.addBox(box)
-        .then(res => {
-            onReset();
-            setBtnState(!btnState);
-        })
-        .catch(err => {
-            console.log('addBox 에러', err);
-        });
-    }
-
     return(
         <>
             <Grid container spacing={2}>

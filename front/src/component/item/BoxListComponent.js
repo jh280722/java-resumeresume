@@ -7,8 +7,7 @@ import ApiService from '../../ApiService';
 function BoxListComponent(){
     const [boxes, setBoxes] = useState([]);
     const [boxName, setBoxName] = useState("");
-    const [message, setMessage] = useState("");
-    const [btnState, setBtnState] = useState(false); // onClick 이벤트 시 렌더링을 시키기 위한 상태 변화 확인용 state (코드 리뷰 부탁드립니다.)
+    const [btnState, setBtnState] = useState(false); // onClick 이벤트 시 렌더링을 시키기 위한 상태 변화 확인용 state
 
     useEffect(() => {
         ApiService.fetchBoxes()
@@ -28,8 +27,6 @@ function BoxListComponent(){
         ApiService.addBox(box)
         .then(res => {
             setBtnState(!btnState); // onClick 이벤트 상태 변화
-            setMessage("박스가 성공적으로 등록되었습니다.");
-            console.log(message);
         })
         .catch(err => {
             console.log('addBox() 에러', err);
@@ -40,8 +37,6 @@ function BoxListComponent(){
         ApiService.deleteBox(boxID)
         .then(res => {
             setBtnState(!btnState); // onClick 이벤트 상태 변화
-            setMessage("박스가 성공적으로 삭제되었습니다.");
-            console.log(message);
         })
         .catch(err => {
             console.log('deleteBox() 에러! ', err);
@@ -55,10 +50,10 @@ function BoxListComponent(){
     return(
         <>
             {boxes.map(box=>
-                <>
+                <div key={box.id}>
                     <button onClick={()=>deleteBox(box.id)}>박스 삭제</button>
                     <ItemlistComponent boxID={box.id.toString()}/>
-                </>
+                </div>
             )}
             <input type="text" placeholder="box name" name={"setBoxName"} value={boxName} onChange={onChangeBoxName}/>
             <button onClick={addBox}>박스 추가</button>
