@@ -41,8 +41,10 @@ public class BoxService {
         itemService.deleteByBoxId(id);
         boxRepository.deleteById(id);
     }
-
+    public void deleteByDocumentId(Long id) {
+        boxRepository.deleteByDocumentId(id);
+    }
     public BoxResponse save(BoxRequest boxRequest) {
-        return BoxResponse.of(boxRepository.save(Box.of(boxRequest.getName())));
+        return BoxResponse.of(boxRepository.save(Box.of(boxRequest.getName(),boxRequest.getDocument())));
     }
 }

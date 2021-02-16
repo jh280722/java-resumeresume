@@ -28,12 +28,10 @@ public class Item {
 
     @ManyToOne
     @JoinColumn(name = "box_id")
-    @JsonManagedReference
+//    @JsonManagedReference(value="item_box")
     private Box box;
 
-    protected Item() {
-    }
-
+    protected Item() {}
     private Item(Long id, int seq, String type, String name, String value, Box box) {
         this.id = id;
         this.seq = seq;
