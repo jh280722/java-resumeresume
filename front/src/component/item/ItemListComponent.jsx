@@ -100,13 +100,19 @@ function ItemlistComponent(props){
 
     const _onDragEnd = e => {
         e.dataTransfer.dropEffect = "move";
+        setBtnState(!btnState);
     }
 
     const _onDrop = e => {
         try{
+            let params = new URLSearchParams();
             let grabPosition = Number(grab.dataset.id);
-            let targetPosition = Number(e.currentTarget.dataset.position);
-            ApiService.dragItem(state.box, grabPosition, targetPosition);
+            let targetPosition = e.currentTarget.dataset.position;
+
+            params.append('itemId',grabPosition);
+            params.append('seq',targetPosition);
+
+            ApiService.dragItem(state.box, params);
         } catch(e){
             console.log(e);
         }
