@@ -50,7 +50,7 @@ public class Items {
 
     public void updateSeq(Long itemId, int updateSeq) {
         Item updateItem = items.stream()
-                .filter(item -> item.getId().equals(itemId))
+                .filter(item -> item.getId() == itemId)
                 .findFirst()
                 .orElse(null);
 
@@ -81,8 +81,18 @@ public class Items {
 
     public Item findById(Long id) {
         return items.stream()
-                .filter(item -> item.getId().equals(id))
+                .filter(item -> item.getId() == id)
                 .findFirst()
                 .orElse(null);
+    }
+
+    public void relocationItems(Long id) {
+        Item deletedItem = findById(id);
+
+        items.stream()
+                .filter(item -> item.getSeq() > deletedItem.getSeq())
+                .forEach(item -> item.decreaseSeq(item.getSeq()));
+
+        remove(deletedItem);
     }
 }

@@ -43,11 +43,11 @@ public class BoxAcceptanceTest extends AcceptanceTest {
         Document document = documents.save(Document.of("document"));
         box = boxes.save(Box.of("box",document));
         // given
-        JHText = 아이템_등록되어_있음(0, "text", "이름", "준호",box);
-        HMTextArea = 아이템_등록되어_있음(0, "textArea", "자기소개", "나는 한민",box);
+        JHText = 아이템_등록되어_있음("text", "이름", "준호",box);
+        HMTextArea = 아이템_등록되어_있음("textArea", "자기소개", "나는 한민",box);
 
-        mainImage = new ItemRequest(0, "image", "이미지", "temp.jpg",box);
-        dateToday = new ItemRequest(0, "date", "날짜", "2021-01-17",box);
+        mainImage = new ItemRequest("image", "이미지", "temp.jpg",box);
+        dateToday = new ItemRequest("date", "날짜", "2021-01-17",box);
         box2 = 박스_등록되어_있음("box2",document);
         box1= new BoxRequest("box1",document);
     }

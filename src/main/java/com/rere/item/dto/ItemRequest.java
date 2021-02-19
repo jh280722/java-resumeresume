@@ -12,8 +12,7 @@ public class ItemRequest {
     public ItemRequest() {
     }
 
-    public ItemRequest(int seq, String type, String name, String value, Box box) {
-        this.seq = seq;
+    public ItemRequest(String type, String name, String value, Box box) {
         this.type = type;
         this.name = name;
         this.value = value;
@@ -39,4 +38,9 @@ public class ItemRequest {
     public int getSeq() {
         return seq;
     }
+
+    public void initSeq(Box box) {
+        this.seq = box.getItems().size();
+    }
+
 }

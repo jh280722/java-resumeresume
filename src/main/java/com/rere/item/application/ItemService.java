@@ -1,6 +1,7 @@
 package com.rere.item.application;
 
 import com.rere.box.domain.Box;
+import com.rere.box.domain.BoxRepository;
 import com.rere.item.domain.Item;
 import com.rere.item.domain.ItemRepository;
 import com.rere.item.dto.ItemRequest;
@@ -14,9 +15,11 @@ import java.util.stream.Collectors;
 public class ItemService {
     public static final long DEFAULT_ID = 0L;
     private final ItemRepository itemRepository;
+    private final BoxRepository boxRepository;
 
-    public ItemService(ItemRepository itemDao) {
-        this.itemRepository = itemDao;
+    public ItemService(ItemRepository itemRepository, BoxRepository boxRepository) {
+        this.itemRepository = itemRepository;
+        this.boxRepository = boxRepository;
     }
 
     public List<ItemResponse> findAll() {
@@ -50,10 +53,13 @@ public class ItemService {
     }
 
     public void deleteById(Long id) {
+        Box box = itemRepository.findById(id).orElseThrow(RuntimeException::new).getBox();
+        box.relocationItems(id);
         itemRepository.deleteById(id);
     }
 
     public ItemResponse save(ItemRequest itemRequest) {
+        itemRequest.initSeq(boxRepository.findById(itemRequest.getBox().getId()).orElse(null));
         return ItemResponse.of(itemRepository.save(Item.of(itemRequest)));
     }
 
@@ -61,7 +67,7 @@ public class ItemService {
         itemRepository.deleteByBoxId(boxId);
     }
 
-    public void updateSeq(Long id, int seq){
+    public void updateSeq(Long id, int seq) {
         Item item = itemRepository.findById(id).orElse(null);
         item.changeSeq(seq);
 

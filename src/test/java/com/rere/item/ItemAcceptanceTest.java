@@ -39,11 +39,11 @@ public class ItemAcceptanceTest extends AcceptanceTest {
         Document document = documents.save(Document.of("document"));
         Box box = boxes.save(Box.of("box",document));
         // given
-        JHText = 아이템_등록되어_있음(0, "text", "이름", "준호", box);
-        HMTextArea = 아이템_등록되어_있음(0,"textArea", "자기소개", "나는 한민", box);
+        JHText = 아이템_등록되어_있음("text", "이름", "준호", box);
+        HMTextArea = 아이템_등록되어_있음("textArea", "자기소개", "나는 한민", box);
 
-        mainImage = new ItemRequest(0, "image", "이미지", "temp.jpg", box);
-        dateToday = new ItemRequest(0, "date", "날짜", "2021-01-17", box);
+        mainImage = new ItemRequest("image", "이미지", "temp.jpg", box);
+        dateToday = new ItemRequest("date", "날짜", "2021-01-17", box);
     }
 
     @DisplayName("아이템을 생성한다.")
@@ -52,7 +52,7 @@ public class ItemAcceptanceTest extends AcceptanceTest {
         Document document = documents.save(Document.of("document"));
         Box box = boxes.save(Box.of("box",document));
         // when
-        ExtractableResponse<Response> response = 아이템_생성_요청(0, "text", "이름", "준호", box);
+        ExtractableResponse<Response> response = 아이템_생성_요청("text", "이름", "준호", box);
 
         // then
         아이템_생성됨(response);
@@ -130,12 +130,12 @@ public class ItemAcceptanceTest extends AcceptanceTest {
                 .extract();
     }
 
-    public static ItemResponse 아이템_등록되어_있음(int seq, String type, String name, String value, Box box) {
-        return 아이템_생성_요청(seq, type, name, value, box).as(ItemResponse.class);
+    public static ItemResponse 아이템_등록되어_있음(String type, String name, String value, Box box) {
+        return 아이템_생성_요청(type, name, value, box).as(ItemResponse.class);
     }
 
-    public static ExtractableResponse<Response> 아이템_생성_요청(int seq, String type, String name, String value, Box box) {
-        ItemRequest itemRequest = new ItemRequest(seq, type, name, value, box);
+    public static ExtractableResponse<Response> 아이템_생성_요청(String type, String name, String value, Box box) {
+        ItemRequest itemRequest = new ItemRequest(type, name, value, box);
 
         return RestAssured
                 .given().log().all()

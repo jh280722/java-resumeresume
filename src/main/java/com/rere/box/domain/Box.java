@@ -71,4 +71,7 @@ public class Box {
         this.name = name;
     }
 
+    public void relocationItems(Long itemId) {
+        items.relocationItems(itemId);
+    }
 }

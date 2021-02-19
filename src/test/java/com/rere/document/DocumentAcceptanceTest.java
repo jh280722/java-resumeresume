@@ -51,8 +51,8 @@ public class DocumentAcceptanceTest extends AcceptanceTest {
         Document document = documents.save(Document.of("document"));
         // given
         box=boxes.save(Box.of("box",document));
-        JHText = 아이템_등록되어_있음(0, "text", "이름", "준호",box);
-        HMTextArea = 아이템_등록되어_있음(0, "textArea", "자기소개", "나는 한민",box);
+        JHText = 아이템_등록되어_있음( "text", "이름", "준호",box);
+        HMTextArea = 아이템_등록되어_있음("textArea", "자기소개", "나는 한민",box);
 
         box2 = 박스_등록되어_있음("box2",document);
         document2 = 문서_등록되어_있음("document2");
