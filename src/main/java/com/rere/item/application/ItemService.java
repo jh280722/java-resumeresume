@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class ItemService {
-    public static final long DEFAULT_ID = 0L;
     private final ItemRepository itemRepository;
     private final BoxRepository boxRepository;
 
