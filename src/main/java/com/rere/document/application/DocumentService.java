@@ -42,14 +42,21 @@ public class DocumentService {
 
     @Transactional
     public void deleteById(Long id) {
-        itemService.deleteByBoxId(id);
         boxService.deleteByDocumentId(id);
         documentRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void deleteBySortationId(Long id) {
+        List<Long> DocumentId = documentRepository.findBySortationId(id);
+        for (Long documentId : DocumentId) {
+            boxService.deleteByDocumentId(documentId);
+        }
+        documentRepository.deleteBySortationId(id);
     }
 
     public DocumentResponse save(DocumentRequest documentRequest) {
         return DocumentResponse.of(documentRepository.save(Document.of(documentRequest.getName())));
     }
-
 
 }

@@ -21,7 +21,6 @@ public class Box {
     private String name;
     @ManyToOne
     @JoinColumn(name = "document_id")
-//    @JsonManagedReference(value="box_document")
     private Document document;
 
     protected Box() {

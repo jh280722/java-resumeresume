@@ -42,7 +42,12 @@ public class BoxService {
         boxRepository.deleteById(id);
     }
 
+    @Transactional
     public void deleteByDocumentId(Long id) {
+        List<Long> BoxId = boxRepository.findByDocumentId(id);
+        for (Long boxId : BoxId) {
+            itemService.deleteByBoxId(boxId);
+        }
         boxRepository.deleteByDocumentId(id);
     }
 
