@@ -1,6 +1,7 @@
 package com.rere.sortation;
 
 import com.rere.AcceptanceTest;
+import com.rere.auth.dto.TokenResponse;
 import com.rere.box.domain.Box;
 import com.rere.box.domain.BoxRepository;
 import com.rere.sortation.domain.SortationRepository;
@@ -24,6 +25,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("구분 관련 기능")
 public class SortationAcceptanceTest extends AcceptanceTest {
+    private static final String EMAIL = "email@email.com";
+    private static final String PASSWORD = "password";
+    private static final String NAME = "준호";
 
     @Autowired
     BoxRepository boxes;

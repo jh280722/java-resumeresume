@@ -21,8 +21,7 @@ public class SortationService {
     public SortationService(SortationRepository sortationRepository, DocumentService documentService, UserService userService) {
         this.sortationRepository = sortationRepository;
         this.documentService = documentService;
-        this.boxService = boxService;
-        this.itemService = itemService;
+        this.userService = userService;
     }
 
     public List<SortationResponse> getSortations() {

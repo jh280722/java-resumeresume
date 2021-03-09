@@ -23,8 +23,8 @@ public class SortationController {
     }
 
     @PostMapping
-    public ResponseEntity<SortationResponse> createSortation(@RequestBody SortationRequest sortationRequest) {
-        SortationResponse sortationResponse = sortationService.save(sortationRequest);
+    public ResponseEntity<SortationResponse> createSortation(@AuthenticationPrincipal LoginUser loginUser, @RequestBody SortationRequest sortationRequest) {
+        SortationResponse sortationResponse = sortationService.save(loginUser.getId(), sortationRequest);
         return ResponseEntity.created(URI.create("/sortations/" + sortationResponse.getId()))
                 .body(sortationResponse);
     }
@@ -35,12 +35,12 @@ public class SortationController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SortationResponse> showSortation(@PathVariable Long id) {
+    public ResponseEntity<SortationResponse> showSortation(@AuthenticationPrincipal LoginUser loginUser, @PathVariable Long id) {
         return ResponseEntity.ok().body(sortationService.findById(id));
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Void> updateSortation(@RequestBody SortationRequest sortationRequest, @PathVariable Long id) {
+    public ResponseEntity<Void> updateSortation(@AuthenticationPrincipal LoginUser loginUser, @RequestBody SortationRequest sortationRequest, @PathVariable Long id) {
         sortationService.updateName(id, sortationRequest);
         return ResponseEntity.ok().build();
     }
@@ -49,5 +49,10 @@ public class SortationController {
     public ResponseEntity<Void> deleteSortation(@AuthenticationPrincipal LoginUser loginUser, @PathVariable Long id) {
         sortationService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @ExceptionHandler(InvalidSortationException.class)
+    public ResponseEntity<Void> invalidToken() {
+        return ResponseEntity.badRequest().build();
     }
 }

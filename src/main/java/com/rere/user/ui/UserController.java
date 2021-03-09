@@ -36,8 +36,8 @@ public class UserController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserResponse> showItem(@PathVariable Long id) {
-        return ResponseEntity.ok().body(userService.findById(id));
+    public ResponseEntity<UserResponse> showUser(@PathVariable Long id) {
+        return ResponseEntity.ok().body(UserResponse.of(userService.findById(id)));
     }
 
     @PutMapping(value = "/{id}")

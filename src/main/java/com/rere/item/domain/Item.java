@@ -1,5 +1,6 @@
 package com.rere.item.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.rere.box.domain.Box;
 import com.rere.item.dto.ItemRequest;
 import com.rere.tableItem.domain.TableItems;
@@ -27,6 +28,10 @@ public class Item {
 
     private String value;
 
+    @Embedded
+    @JsonBackReference(value = "tableItem_item")
+    private TableItems tableItems = null;
+
     @ManyToOne
     @JoinColumn(name = "box_id")
 //    @JsonManagedReference(value="item_box")
@@ -42,6 +47,9 @@ public class Item {
         this.name = name;
         this.value = value;
         this.box = box;
+        if (TABLE.equals(type)) {
+            tableItems = TableItems.of();
+        }
     }
 
     private Item(int seq, String type, String name, String value, Box box) {
