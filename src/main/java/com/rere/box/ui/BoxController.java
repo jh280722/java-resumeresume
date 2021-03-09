@@ -52,6 +52,6 @@ public class BoxController {
     public ResponseEntity<BoxResponse> dragItem(@PathVariable Long id,
                                                 @RequestParam("itemId") Long itemId,
                                                 @RequestParam("seq") int seq) {
-        return ResponseEntity.ok().body(boxService.changeItemSeq(id,  itemId,  seq));
+        return ResponseEntity.ok().body(boxService.changeItemSeq(id, itemId, seq));
     }
 }

@@ -1,9 +1,6 @@
 package com.rere.document.domain;
 
-import com.rere.box.dto.BoxResponse;
 import com.rere.document.dto.DocumentResponse;
-import com.rere.sortation.domain.Sortation;
-import com.rere.sortation.dto.SortationResponse;
 
 import javax.persistence.Embeddable;
 import javax.persistence.OneToMany;

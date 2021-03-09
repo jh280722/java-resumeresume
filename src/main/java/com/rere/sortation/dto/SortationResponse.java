@@ -1,6 +1,5 @@
 package com.rere.sortation.dto;
 
-import com.rere.document.domain.Document;
 import com.rere.document.dto.DocumentResponse;
 import com.rere.sortation.domain.Sortation;
 import com.rere.user.domain.User;

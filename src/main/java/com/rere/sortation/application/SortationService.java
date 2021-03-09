@@ -1,8 +1,6 @@
 package com.rere.sortation.application;
 
-import com.rere.box.application.BoxService;
 import com.rere.document.application.DocumentService;
-import com.rere.item.application.ItemService;
 import com.rere.sortation.domain.Sortation;
 import com.rere.sortation.domain.SortationRepository;
 import com.rere.sortation.dto.SortationRequest;

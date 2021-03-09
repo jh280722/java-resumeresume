@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class AuthController {
-    private AuthService authService;
     private final JwtTokenProvider jwtTokenProvider;
+    private AuthService authService;
 
     public AuthController(AuthService authService, JwtTokenProvider jwtTokenProvider) {
         this.authService = authService;
