@@ -21,7 +21,7 @@ public class SortationRepositoryTest {
 
     @Test
     void getDocuments() {
-        Sortation sortation = sortations.findByName("sortation");
+        Sortation sortation = sortations.findByName("sortationData");
         Document document = documents.save(Document.of("documents", sortation));
         assertThat(sortation.getDocuments().size()).isEqualTo(2);
     }

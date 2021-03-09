@@ -59,6 +59,7 @@ public class Document {
     public String getName() {
         return name;
     }
+
     public Sortation getSortation() {
         return sortation;
     }

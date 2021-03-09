@@ -29,8 +29,8 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public UserResponse findById(Long id) {
-        return UserResponse.of(userRepository.findById(id).orElse(User.of()));
+    public User findById(Long id) {
+        return userRepository.findById(id).orElse(User.of());
     }
 
     @Transactional

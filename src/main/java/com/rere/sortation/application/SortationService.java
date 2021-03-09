@@ -1,8 +1,6 @@
 package com.rere.sortation.application;
 
-import com.rere.box.application.BoxService;
 import com.rere.document.application.DocumentService;
-import com.rere.item.application.ItemService;
 import com.rere.sortation.domain.Sortation;
 import com.rere.sortation.domain.SortationRepository;
 import com.rere.sortation.dto.SortationRequest;
@@ -23,8 +21,7 @@ public class SortationService {
     public SortationService(SortationRepository sortationRepository, DocumentService documentService, UserService userService) {
         this.sortationRepository = sortationRepository;
         this.documentService = documentService;
-        this.boxService = boxService;
-        this.itemService = itemService;
+        this.userService = userService;
     }
 
     public List<SortationResponse> getSortations() {

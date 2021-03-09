@@ -1,7 +1,6 @@
 package com.rere.document.dto;
 
 import com.rere.sortation.domain.Sortation;
-import com.rere.sortation.dto.SortationResponse;
 
 public class DocumentRequest {
     private String name;

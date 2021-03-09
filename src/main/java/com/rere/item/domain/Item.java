@@ -1,7 +1,9 @@
 package com.rere.item.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.rere.box.domain.Box;
 import com.rere.item.dto.ItemRequest;
+import com.rere.tableItem.domain.TableItems;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -10,6 +12,7 @@ import java.util.Objects;
 public class Item {
     public static final long DEFAULT_ID = 0L;
     public static final int DEFAULT_SEQ = 0;
+    public static final String TABLE = "table";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,6 +27,10 @@ public class Item {
     private String name;
 
     private String value;
+
+    @Embedded
+    @JsonBackReference(value = "tableItem_item")
+    private TableItems tableItems = null;
 
     @ManyToOne
     @JoinColumn(name = "box_id")
@@ -40,6 +47,9 @@ public class Item {
         this.name = name;
         this.value = value;
         this.box = box;
+        if (TABLE.equals(type)) {
+            tableItems = TableItems.of();
+        }
     }
 
     private Item(int seq, String type, String name, String value, Box box) {

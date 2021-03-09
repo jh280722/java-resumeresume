@@ -1,6 +1,5 @@
 package com.rere.sortation.dto;
 
-import com.rere.document.domain.Document;
 import com.rere.user.domain.User;
 
 public class SortationRequest {

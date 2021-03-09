@@ -56,7 +56,7 @@ public class DocumentService {
     }
 
     public DocumentResponse save(DocumentRequest documentRequest) {
-        return DocumentResponse.of(documentRepository.save(Document.of(documentRequest.getName(),documentRequest.getSortation())));
+        return DocumentResponse.of(documentRepository.save(Document.of(documentRequest.getName(), documentRequest.getSortation())));
     }
 
 }
