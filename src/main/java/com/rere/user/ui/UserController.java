@@ -26,28 +26,28 @@ public class UserController {
     @PostMapping
     public ResponseEntity createItem(@RequestBody UserRequest userRequest) {
         //@AuthenticationPrincipal LoginMember loginMember 사용해서 인증
-        return ResponseEntity.created(URI.create("/items/" + userService.save(userRequest).getId()))
+        return ResponseEntity.created(URI.create("/users/" + userService.save(userRequest).getId()))
                 .build();
     }
 
     @GetMapping
-    public ResponseEntity<List<UserResponse>> getItems() {
+    public ResponseEntity<List<UserResponse>> getUsers() {
         return ResponseEntity.ok().body(userService.findAll());
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserResponse> showItem(@PathVariable Long id) {
+    public ResponseEntity<UserResponse> showUser(@PathVariable Long id) {
         return ResponseEntity.ok().body(userService.findById(id));
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity updateItem(@RequestBody UserRequest userRequest, @PathVariable Long id) {
+    public ResponseEntity updateUser(@RequestBody UserRequest userRequest, @PathVariable Long id) {
         userService.updateUser(id, userRequest);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteItem(@PathVariable Long id) {
+    public ResponseEntity deleteUser(@PathVariable Long id) {
         userService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
