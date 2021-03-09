@@ -1,12 +1,23 @@
 package com.rere.item;
 
+import com.rere.auth.dto.TokenResponse;
 import com.rere.box.domain.Box;
 import com.rere.box.domain.BoxRepository;
+import com.rere.box.dto.BoxResponse;
 import com.rere.document.domain.Document;
 import com.rere.document.domain.DocumentRepository;
+import com.rere.document.dto.DocumentResponse;
 import com.rere.item.domain.Item;
 import com.rere.item.domain.ItemRepository;
 import com.rere.item.domain.Items;
+import com.rere.item.dto.ItemRequest;
+import com.rere.item.dto.ItemResponse;
+import com.rere.sortation.domain.Sortation;
+import com.rere.sortation.domain.SortationRepository;
+import com.rere.sortation.dto.SortationResponse;
+import com.rere.user.domain.User;
+import com.rere.user.domain.UserRepository;
+import com.rere.user.dto.UserRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,26 +25,59 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Arrays;
 
+import static com.rere.auth.AuthAcceptanceTest.로그인되어_있음;
+import static com.rere.auth.AuthAcceptanceTest.회원_등록되어_있음;
+import static com.rere.box.BoxAcceptanceTest.박스_등록되어_있음;
+import static com.rere.document.DocumentAcceptanceTest.문서_등록되어_있음;
+import static com.rere.sortation.SortationAcceptanceTest.구분_등록되어_있음;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 public class ItemRepositoryTest {
+
+    private static final String EMAIL = "email@email.com";
+    private static final String PASSWORD = "password";
+    private static final String NAME = "준호";
+    private ItemResponse JHText;
+    private ItemResponse HMTextArea;
+    private ItemRequest mainImage;
+    private ItemRequest dateToday;
+
     @Autowired
     private ItemRepository items;
     @Autowired
     private BoxRepository boxes;
     @Autowired
-    private DocumentRepository documents;
+    DocumentRepository documents;
+    @Autowired
+    SortationRepository sortations;
+    @Autowired
+    UserRepository users;
 
+    private TokenResponse user;
+    private SortationResponse sortation;
+    private DocumentResponse document;
+    private BoxResponse box;
+
+    private User user1;
     private Item item;
     private Items itemsTest;
     
     @BeforeEach
     public void setUp() {
-        Document document = documents.save(Document.of("document"));
-        Box box = boxes.save(Box.of("box", document));
 
-        item = items.save(Item.of(0, "text", "이름", "준호", box));
+//        회원_등록되어_있음(EMAIL, PASSWORD, NAME);
+//        user = 로그인되어_있음(EMAIL, PASSWORD);
+//        sortation = 구분_등록되어_있음(user, "sortation");
+//        document = 문서_등록되어_있음(user, "document", sortation);
+//        box = 박스_등록되어_있음(user, "box", document);
+
+
+        User user= users.save(User.of(EMAIL,PASSWORD,NAME));
+        Sortation sortation= sortations.save(Sortation.of("sortation",user));
+        Document document = documents.save(Document.of("document",sortation));
+        Box box = boxes.save(Box.of("box", document));
+        item = items.save(Item.of(0, "text", "이름", "준호", Box.of(box.getId(),box.getName(),box.getDocument())));
     }
 
     @Test
@@ -64,7 +108,9 @@ public class ItemRepositoryTest {
 
     @Test
     void updateSeqs() {
-        Document document = documents.save(Document.of("document"));
+        User user= users.save(User.of(EMAIL,PASSWORD,NAME));
+        Sortation sortation= sortations.save(Sortation.of("sortation",user));
+        Document document = documents.save(Document.of("document",sortation));
         Box box = boxes.save(Box.of("box", document));
 
         Item item0 = items.save(Item.of(0, "text", "ho", "jun", box));
@@ -95,7 +141,10 @@ public class ItemRepositoryTest {
 
     @Test
     void updateWithBox() {
-        Document document = documents.save(Document.of("document"));
+
+        User user= users.save(User.of(EMAIL,PASSWORD,NAME));
+        Sortation sortation = sortations.save(Sortation.of("sortation", user));
+        Document document = documents.save(Document.of("document", sortation));
         Box box = boxes.save(Box.of("box", document));
         final Item expected = items.save(
                 Item.of(0, "textArea", "자기소개", "hi", box));

@@ -1,6 +1,8 @@
 package com.rere.user.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.rere.sortation.domain.Sortations;
 import com.rere.user.dto.UserRequest;
 
 import javax.persistence.*;
@@ -19,6 +21,10 @@ public class User {
 
     @Column(nullable = false)
     private String name;
+
+    @Embedded
+    @JsonBackReference(value = "sortation_user")
+    private final Sortations sortations = Sortations.of();
 
     protected User() {
     }
@@ -41,7 +47,10 @@ public class User {
     }
 
     public static User of() {
-        return new User( null, null, null);
+        return new User(null, null, null);
+    }
+    public static User of(String email, String password, String name) {
+        return new User(email,password,name);
     }
 
 
@@ -59,6 +68,10 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public Sortations getSortations() {
+        return sortations;
     }
 
     public void changeName(String name) {

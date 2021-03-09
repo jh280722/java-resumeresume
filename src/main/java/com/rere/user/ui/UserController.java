@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity createItem(@RequestBody UserRequest userRequest) {
+    public ResponseEntity createUser(@RequestBody UserRequest userRequest) {
         //@AuthenticationPrincipal LoginMember loginMember 사용해서 인증
         return ResponseEntity.created(URI.create("/users/" + userService.save(userRequest).getId()))
                 .build();
