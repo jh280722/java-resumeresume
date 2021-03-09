@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const ITEM_API_BASE_URL = "http://localhost:8080/items";
-const BOX_API_BASE_URL = "http://localhost:8080/boxes"
+const BOX_API_BASE_URL = "http://localhost:8080/boxes";
+const DOC_API_BASE_URL = "http://localhost:8080/documents";
 
 class ApiService{
     // item 관리
@@ -44,6 +45,23 @@ class ApiService{
 
     dragItem(box, params){
         return axios.put(BOX_API_BASE_URL + '/drag/' + box.id, params);
+    }
+
+    // document 관리
+    fetchDocuments(){
+        return axios.get(DOC_API_BASE_URL);
+    }
+
+    fetchDocumentsByID(docID){
+        return axios.get(DOC_API_BASE_URL + '/' + docID);
+    }
+
+    deleteDocument(docID){
+        return axios.delete(DOC_API_BASE_URL + '/' + docID);
+    }
+
+    addDocument(document){
+        return axios.post(DOC_API_BASE_URL,document);
     }
 }
 

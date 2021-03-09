@@ -1,6 +1,7 @@
 import React from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import BoxListComponent from "../item/BoxListComponent";
+import DocumentListComponent from "../item/DocumentListComponent";
 
 
 /*
@@ -14,13 +15,14 @@ SPA를 구현하기 위해 사용하는 라우터, 요청에 맞는 컴포넌트
            <Switch> 내부에 <Route>들을 넣으면 제일 처음 매칭되는 <Route>만 선별하여 실행하기 때문에
            충돌을 막아줄 수 있다.
 */
-const AppRouter = () => {
+function AppRouter(){
+
     return(
         <div>
             <BrowserRouter>
                 <div>
                     <Switch>
-                        <Route exact path="/" component={BoxListComponent} />
+                        <Route exact path="/" component={DocumentListComponent} />
                         <Route path="/items" component={BoxListComponent} />
                     </Switch>
                 </div>

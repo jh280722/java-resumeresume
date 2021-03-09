@@ -1,91 +1,126 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import ApiService from '../../ApiService';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import {Close} from '@styled-icons/ionicons-sharp/Close';
 
-function ItemlistComponent(props){
+const Box = styled.div`
+    #boxName{
+        color: #232323;
+        font-weight : bolder;
+        font-size : 23px;
+    }
+
+    #boxContents{
+        border-top : 1px solid gray;
+        border-bottom : 1px solid gray;
+        margin-bottom : 10px;
+        display : flex;
+        justify-content : space-between;
+        #textItem{
+            display : flex;
+            align-items : center;
+            #textItemName{
+                border-right : 1px solid gray;
+                padding-right : 10px;
+                padding-left : 10px;
+                color: #3B3B3B;
+                font-weight : bold;
+                font-size : 18px;
+            }
+            #textItemValue{
+                padding-right : 10px;
+                padding-left : 10px;
+                color: #3B3B3B;
+                font-weight : normal;
+                font-size : 15px;
+            }
+        }
+    }
+`;
+
+const ItemDel = styled(Close)`
+    color: #3B3B3B;
+    width : 25px;
+    height : 25px;
+`;
+
+
+
+function ItemlistComponent(props) {
     const [state, setState] = useState({
         box: [],
         items: [],
-        boxName : '',
-        type:'',
-        name:'',
-        value:'',
-        seq:'',
+        boxName: '',
+        type: '',
+        name: '',
+        value: '',
+        seq: '',
     });
     const [btnState, setBtnState] = useState(false);
     const [grab, setGrab] = useState(null);
 
     useEffect(() => {
         ApiService.fetchBoxesByID(props.boxID)
-        .then(res => {
-            setState({
-                ...state,
-                box : res.data,
-                items: res.data.items,
-            });
-        })
-        .catch(err => {
-            console.log("reloadError!",err);
-        })
+            .then(res => {
+                setState({
+                    ...state,
+                    box: res.data,
+                    items: res.data.items,
+                });
+            })
+            .catch(err => {
+                console.log("reloadError!", err);
+            })
     }, [btnState]);
 
     const deleteItem = (itemID) => {
         ApiService.deleteItem(itemID)
-        .then(res => {
-            setBtnState(!btnState); // onClick 이벤트 상태 변화
-        })
-        .catch(err => {
-            console.log('deleteItem() 에러! ', err);
-        })
+            .then(res => {
+                setBtnState(!btnState); // onClick 이벤트 상태 변화
+            })
+            .catch(err => {
+                console.log('deleteItem() 에러! ', err);
+            })
     }
 
     const onChange = (e) => {
         setState({
             ...state,
-            [e.target.name] : e.target.value
+            [e.target.name]: e.target.value
         });
     }
-    
+
     const onReset = () => {
         setState({
             ...state,
-            type:'',
-            name:'',
-            value:'',
-            seq:'',
+            type: '',
+            name: '',
+            value: '',
         })
     }
 
-    const saveItem = (e) =>{
+    const saveItem = (e) => {
         e.preventDefault();
 
-        let targetBox ={
+        let targetBox = {
             id: e.target.dataset.boxid,
-            name : e.target.dataset.boxname,
+            name: e.target.dataset.boxname,
         }
-        let item ={
+        let item = {
             type: state.type,
             name: state.name,
             value: state.value,
-            seq: state.seq,
             box: targetBox,
         }
 
         ApiService.addItem(item)
-        .then(res => {
-            onReset();
-            setBtnState(!btnState);
-        })
-        .catch(err => {
-            console.log('saveItem 에러', err);
-        });
+            .then(res => {
+                onReset();
+                setBtnState(!btnState);
+            })
+            .catch(err => {
+                console.log('saveItem 에러', err);
+            });
     }
 
     const _onDragOver = e => {
@@ -104,95 +139,95 @@ function ItemlistComponent(props){
     }
 
     const _onDrop = e => {
-        try{
+        try {
             let params = new URLSearchParams();
             let grabPosition = Number(grab.dataset.id);
             let targetPosition = e.currentTarget.dataset.position;
 
-            params.append('itemId',grabPosition);
-            params.append('seq',targetPosition);
+            params.append('itemId', grabPosition);
+            params.append('seq', targetPosition);
 
             ApiService.dragItem(state.box, params);
-        } catch(e){
+        } catch (e) {
             console.log(e);
         }
     }
 
-    return(
-        <>
-            <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <Paper>
-                            <div key={state.box.id}>
-                                <h2>{state.box.name}</h2>
-                                <table>
-                                    <tbody>
-                                        {state.items.map(item =>
-                                            <tr 
-                                                draggable
-                                                onDragOver={_onDragOver}
-                                                onDragStart={_onDragStart}
-                                                onDragEnd={_onDragEnd}
-                                                onDrop={_onDrop}
-                                                key={item.id}
-                                                data-id={item.id}
-                                                data-position={item.seq}
-                                            >
-                                                <td>{item.type}</td>
-                                                <td>{item.name}</td>
-                                                <td>{item.value}</td>
-                                                <td>{item.seq}</td>
-                                                <td>
-                                                    <button onClick={()=>deleteItem(item.id)}>Delete</button>
-                                                </td>
-                                            </tr>
-                                            )}
-                                        <tr>
-                                            <td>
-                                                <FormControl variant="outlined">
-                                                    <Select
-                                                        name={"type"}
-                                                        value={state.type}
-                                                        displayEmpty
-                                                        onChange={onChange}
-                                                        inputProps={{ 'aria-label': 'Without label' }}
-                                                    >   
-                                                        <MenuItem value="">
-                                                            <em>None</em>
-                                                        </MenuItem>
-                                                        <MenuItem value={"text"}>text</MenuItem>
-                                                        <MenuItem value={"textArea"}>textArea</MenuItem>
-                                                        <MenuItem value={"date"}>date</MenuItem>
-                                                        <MenuItem value={"image"}>image</MenuItem>
-                                                        <MenuItem value={"period"}>period</MenuItem>
-                                                    </Select>
-                                                </FormControl>
-                                            </td>
-                                            {{
-                                                text : (<>
-                                                    <td>
-                                                        <input type="text" placeholder="input item name" name={"name"} value={state.name} onChange={onChange} />
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" placeholder="input item value" name={"value"} value={state.value} onChange={onChange}/>
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" placeholder="input seq" name={"seq"} value={state.seq} onChange={onChange}/>
-                                                    </td>
-                                                    <td>
-                                                        <button onClick={saveItem} data-boxid={state.box.id} data-boxname={state.box.name}>Save</button>
-                                                    </td>
-                                                </>),
-                                                textArea : <p>textArea</p>
-                                            }[state.type]}
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </Paper>
-                    </Grid>
-                </Grid>
-            </>
+    return (
+            <Box key={state.box.id}>
+                <div id="boxName">{state.box.name}</div>
+                <div>
+                    {state.items.map(item =>
+                        <div
+                            draggable
+                            onDragOver={_onDragOver}
+                            onDragStart={_onDragStart}
+                            onDragEnd={_onDragEnd}
+                            onDrop={_onDrop}
+                            key={item.id}
+                            data-id={item.id}
+                            data-position={item.seq}
+                            id="boxContents"
+                        >
+                            {{
+                                text: (
+                                <div id="textItem">
+                                    <p id="textItemName">{item.name}</p>
+                                    <p id="textItemValue">{item.value}</p>
+                                </div>),
+                                textArea: (<p>{item.name} : {item.value}</p>),
+                                date: (<p>{item.name} : {item.value}</p>),
+                                image: (<p>{item.name} : {item.value}</p>),
+                                period: (<p>{item.name} : {item.value}</p>),
+                            }[item.type]}
+                            <ItemDel onClick={() => deleteItem(item.id)}>Delete</ItemDel>
+                        </div>
+                    )}
+                    <div>
+                        <select
+                            name={"type"}
+                            value={state.type}
+                            displayEmpty
+                            onChange={onChange}
+                            inputProps={{ 'aria-label': 'Without label' }}
+                        >
+                            <option value="">타입선택</option>
+                            <option value={"text"}>짧은 글</option>
+                            <option value={"textArea"}>긴 글</option>
+                            <option value={"date"}>날짜</option>
+                            <option value={"image"}>이미지</option>
+                            <option value={"period"}>기간</option>
+                        </select>
+                        {{
+                            text: (<>
+                                <input type="text" name={"name"} value={state.name} onChange={onChange} />
+                                <input type="text" name={"value"} value={state.value} onChange={onChange} />
+                                <button onClick={saveItem} data-boxid={state.box.id} data-boxname={state.box.name}>Save</button>
+                            </>),
+                            textArea: (<>
+                                <input type="text" name={"name"} value={state.name} onChange={onChange} />
+                                <input type="text" name={"value"} value={state.value} onChange={onChange} />
+                                <button onClick={saveItem} data-boxid={state.box.id} data-boxname={state.box.name}>Save</button>
+                            </>),
+                            date: (<>
+                                <input type="text" name={"name"} value={state.name} onChange={onChange} />
+                                <input type="text" name={"value"} value={state.value} onChange={onChange} />
+                                <button onClick={saveItem} data-boxid={state.box.id} data-boxname={state.box.name}>Save</button>
+                            </>),
+                            image: (<>
+                                <input type="text" name={"name"} value={state.name} onChange={onChange} />
+                                <input type="text" name={"value"} value={state.value} onChange={onChange} />
+                                <button onClick={saveItem} data-boxid={state.box.id} data-boxname={state.box.name}>Save</button>
+                            </>),
+                            period: (<>
+                                <input type="text" name={"name"} value={state.name} onChange={onChange} />
+                                <input type="text" name={"value"} value={state.value} onChange={onChange} />
+                                <button onClick={saveItem} data-boxid={state.box.id} data-boxname={state.box.name}>Save</button>
+                            </>),
+                        }[state.type]}
+                    </div>
+                </div>
+            </Box>
     )
 }
 export default ItemlistComponent;
