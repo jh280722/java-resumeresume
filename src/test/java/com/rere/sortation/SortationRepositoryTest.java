@@ -23,6 +23,6 @@ public class SortationRepositoryTest {
     void getDocuments() {
         Sortation sortation = sortations.findByName("sortation");
         Document document = documents.save(Document.of("documents", sortation));
-        assertThat(sortation.getDocuments().size()).isEqualTo(1);
+        assertThat(sortation.getDocuments().size()).isEqualTo(2);
     }
 }

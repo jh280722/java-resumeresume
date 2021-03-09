@@ -9,5 +9,5 @@ public interface SortationRepository extends JpaRepository<Sortation, Long> {
 
     void deleteByUserId(Long documentId);
 
-    List<Long> findbyUserId(Long id);
+    List<Long> findByUserId(Long id);
 }

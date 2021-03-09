@@ -3,6 +3,7 @@ package com.rere.sortation.domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.rere.document.domain.Documents;
 import com.rere.sortation.dto.SortationRequest;
+import com.rere.user.domain.User;
 
 import javax.persistence.*;
 

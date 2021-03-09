@@ -1,8 +1,11 @@
 package com.rere.sortation.ui;
 
+import com.rere.auth.domain.AuthenticationPrincipal;
 import com.rere.sortation.application.SortationService;
 import com.rere.sortation.dto.SortationRequest;
 import com.rere.sortation.dto.SortationResponse;
+import com.rere.sortation.exception.InvalidSortationException;
+import com.rere.user.domain.LoginUser;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +46,7 @@ public class SortationController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSortation(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteSortation(@AuthenticationPrincipal LoginUser loginUser, @PathVariable Long id) {
         sortationService.deleteById(id);
         return ResponseEntity.noContent().build();
     }

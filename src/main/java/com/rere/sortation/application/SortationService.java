@@ -7,6 +7,7 @@ import com.rere.sortation.domain.Sortation;
 import com.rere.sortation.domain.SortationRepository;
 import com.rere.sortation.dto.SortationRequest;
 import com.rere.sortation.dto.SortationResponse;
+import com.rere.user.application.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,10 +18,9 @@ import java.util.stream.Collectors;
 public class SortationService {
     private final SortationRepository sortationRepository;
     private final DocumentService documentService;
-    private final BoxService boxService;
-    private final ItemService itemService;
+    private final UserService userService;
 
-    public SortationService(SortationRepository sortationRepository, DocumentService documentService, BoxService boxService, ItemService itemService) {
+    public SortationService(SortationRepository sortationRepository, DocumentService documentService, UserService userService) {
         this.sortationRepository = sortationRepository;
         this.documentService = documentService;
         this.boxService = boxService;
@@ -50,15 +50,15 @@ public class SortationService {
 
     @Transactional
     public void deleteByUserId(Long id) {
-        List<Long> DocumentId = sortationRepository.findbyUserId(id);
+        List<Long> DocumentId = sortationRepository.findByUserId(id);
         for (Long documentId : DocumentId) {
             documentService.deleteBySortationId(documentId);
         }
         sortationRepository.deleteByUserId(id);
     }
 
-    public SortationResponse save(SortationRequest sortationRequest) {
-        return SortationResponse.of(sortationRepository.save(Sortation.of(sortationRequest.getName(), sortationRequest.getUser())));
+    public SortationResponse save(Long userId, SortationRequest sortationRequest) {
+        return SortationResponse.of(sortationRepository.save(Sortation.of(sortationRequest.getName(), userService.findById(userId))));
     }
 
 }

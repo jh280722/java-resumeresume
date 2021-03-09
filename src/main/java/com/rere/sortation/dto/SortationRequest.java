@@ -1,6 +1,7 @@
 package com.rere.sortation.dto;
 
 import com.rere.document.domain.Document;
+import com.rere.user.domain.User;
 
 public class SortationRequest {
     private String name;
@@ -9,16 +10,15 @@ public class SortationRequest {
     public SortationRequest() {
     }
 
-    public SortationRequest(String name, User user) {
+    public SortationRequest(String name) {
         this.name = name;
-        this.user = user;
     }
 
     public String getName() {
         return name;
     }
 
-    public Document getUser() {
+    public User getUser() {
         return user;
     }
 }

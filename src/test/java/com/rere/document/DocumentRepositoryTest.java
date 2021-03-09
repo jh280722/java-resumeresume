@@ -23,7 +23,7 @@ public class DocumentRepositoryTest {
 
     @Test
     void getBoxes() {
-        Document document = documents.findByName("document");
+        Document document = documents.findByName("documentData");
         Box box = boxes.save(Box.of("box2",document));
         assertThat(document.getBoxes().size()).isEqualTo(2);
     }

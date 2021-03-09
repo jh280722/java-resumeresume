@@ -3,6 +3,7 @@ package com.rere.sortation.dto;
 import com.rere.document.domain.Document;
 import com.rere.document.dto.DocumentResponse;
 import com.rere.sortation.domain.Sortation;
+import com.rere.user.domain.User;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class SortationResponse {
         return documents;
     }
 
-    public Document getUser() {
+    public User getUser() {
         return user;
     }
 }
