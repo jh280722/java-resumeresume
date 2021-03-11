@@ -28,6 +28,10 @@ import org.springframework.http.MediaType;
 
 import static com.rere.auth.AuthAcceptanceTest.로그인되어_있음;
 import static com.rere.auth.AuthAcceptanceTest.회원_등록되어_있음;
+import static com.rere.box.BoxAcceptanceTest.박스_생성_요청;
+import static com.rere.box.BoxAcceptanceTest.박스_생성됨;
+import static com.rere.item.ItemAcceptanceTest.아이템_생성_요청;
+import static com.rere.item.ItemAcceptanceTest.아이템_생성됨;
 import static com.rere.sortation.SortationAcceptanceTest.구분_등록되어_있음;
 import static org.assertj.core.api.Assertions.assertThat;
 

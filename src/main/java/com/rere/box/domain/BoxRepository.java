@@ -9,5 +9,5 @@ public interface BoxRepository extends JpaRepository<Box, Long> {
 
     void deleteByDocumentId(Long documentId);
 
-    List<Long> findByDocumentId(Long id);
+    List<Box> findByDocumentId(Long id);
 }
