@@ -105,7 +105,7 @@ public class ItemAcceptanceTest extends AcceptanceTest {
     }
 
     public static ExtractableResponse<Response> 아이템_생성_요청(TokenResponse tokenResponse, String type, String value, String name, Box box) {
-        ItemRequest itemRequest = new ItemRequest(type, name, value, box);
+        ItemRequest itemRequest = new ItemRequest(type, name, value, box,0L,0L,"");
 
         return RestAssured
                 .given().log().all()
