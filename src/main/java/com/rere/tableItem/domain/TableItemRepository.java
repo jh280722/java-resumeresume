@@ -5,11 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface TableItemRepository extends JpaRepository<TableItem, Long> {
-    List<TableItem> findByRow(Long row);
+    List<TableItem> findByTableRow(Long tableRow);
 
-    List<TableItem> findByColumn(Long row);
+    List<TableItem> findByTableCol(Long tableCol);
 
-    List<TableItem> findByItemId(Long tableId);
+    List<TableItem> findByItemId(Long itemId);
 
     void deleteByItemId(Long itemId);
 }

@@ -5,36 +5,36 @@ import com.rere.tableItem.domain.TableItem;
 
 public class TableItemResponse {
     private Long id;
-    private Long row;
-    private Long column;
+    private Long tableRow;
+    private Long tableCol;
     private String value;
     private Item item;
 
     public TableItemResponse() {
     }
 
-    public TableItemResponse(Long id, Long row, Long column, String value, Item item) {
+    public TableItemResponse(Long id, Long tableRow, Long tableCol, String value, Item item) {
         this.id = id;
-        this.row = row;
-        this.column = column;
+        this.tableRow = tableRow;
+        this.tableCol = tableCol;
         this.value = value;
         this.item = item;
     }
 
     public static TableItemResponse of(TableItem tableItem) {
-        return new TableItemResponse(tableItem.getId(), tableItem.getRow(), tableItem.getColumn(), tableItem.getValue(), tableItem.getItem());
+        return new TableItemResponse(tableItem.getId(), tableItem.getTableRow(), tableItem.getTableCol(), tableItem.getValue(), tableItem.getItem());
     }
 
     public Long getId() {
         return id;
     }
 
-    public Long getRow() {
-        return row;
+    public Long getTableRow() {
+        return tableRow;
     }
 
-    public Long getColumn() {
-        return column;
+    public Long getTableCol() {
+        return tableCol;
     }
 
     public String getValue() {
