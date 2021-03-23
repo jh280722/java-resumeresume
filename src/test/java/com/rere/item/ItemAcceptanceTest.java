@@ -8,6 +8,9 @@ import com.rere.box.dto.BoxResponse;
 import com.rere.document.domain.Document;
 import com.rere.document.domain.DocumentRepository;
 import com.rere.document.dto.DocumentResponse;
+import com.rere.image.dto.ImageRequest;
+import com.rere.image.dto.ImageResponse;
+import com.rere.item.domain.Item;
 import com.rere.item.domain.ItemRepository;
 import com.rere.item.dto.ItemRequest;
 import com.rere.item.dto.ItemResponse;
@@ -58,6 +61,7 @@ public class ItemAcceptanceTest extends AcceptanceTest {
     private SortationResponse sortation;
     private DocumentResponse document;
     private BoxResponse box;
+    private ItemRequest itemRequest1;
 
     @BeforeEach
     public void setUp() {
@@ -68,6 +72,7 @@ public class ItemAcceptanceTest extends AcceptanceTest {
         sortation = 구분_등록되어_있음(user, "sortation");
         document = 문서_등록되어_있음(user, "document", sortation);
         box = 박스_등록되어_있음(user, "box", document);
+        itemRequest1 = new ItemRequest("itemRQ","name","park",Box.of(box.getId(),box.getName(),box.getDocument()),0L,0L);
 
 //        // given
 //        JHText = 아이템_등록되어_있음("text", "이름", "준호", box);
@@ -90,13 +95,12 @@ public class ItemAcceptanceTest extends AcceptanceTest {
         // then
         아이템_조회됨(findResponse);
 
-//        // when
-//        ExtractableResponse<Response> oldResponse = 문서_생성_요청(user, "강남역1", Sortation.of(sortation.getId(),sortation.getName(),sortation.getUser()));
-//        ExtractableResponse<Response> newResponse = 문서_생성_요청(user, "강남역2", Sortation.of(sortation.getId(),sortation.getName(),sortation.getUser()));
-//
-//        ExtractableResponse<Response> updateResponse = 문서_수정_요청(user,oldResponse,newResponse );
-//        // then
-//        문서_수정됨(updateResponse);
+        // when
+        ExtractableResponse<Response> oldResponse = 아이템_생성_요청(user,"testitem","name","jeon",Box.of(box.getId(),box.getName(),box.getDocument()));
+
+        ExtractableResponse<Response> updateResponse = 아이템_수정_요청(user,oldResponse.as(ItemResponse.class), itemRequest1);
+        // then
+        아이템_수정됨(updateResponse);
 
         // when
         ExtractableResponse<Response> deleteResponse = 아이템_삭제_요청(user, createResponse);
@@ -105,7 +109,7 @@ public class ItemAcceptanceTest extends AcceptanceTest {
     }
 
     public static ExtractableResponse<Response> 아이템_생성_요청(TokenResponse tokenResponse, String type, String value, String name, Box box) {
-        ItemRequest itemRequest = new ItemRequest(type, name, value, box,0L,0L,"");
+        ItemRequest itemRequest = new ItemRequest(type, name, value, box,0L,0L);
 
         return RestAssured
                 .given().log().all()

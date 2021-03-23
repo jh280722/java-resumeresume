@@ -14,7 +14,6 @@ public class Item {
     public static final int DEFAULT_SEQ = 0;
     public static final long DEFAULT_SIZE = 0L;
     public static final String TABLE = "table";
-    public static final String DEFAULT_PATH = "";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,8 +33,6 @@ public class Item {
 
     private Long colSize;
 
-    private String path;
-
     @Embedded
     @JsonBackReference(value = "tableItem_item")
     private TableItems tableItems = null;
@@ -48,7 +45,7 @@ public class Item {
     protected Item() {
     }
 
-    private Item(Long id, int seq, String type, String name, String value, Box box, Long rowSize, Long colSize, String path) {
+    private Item(Long id, int seq, String type, String name, String value, Box box, Long rowSize, Long colSize) {
         this.id = id;
         this.seq = seq;
         this.type = type;
@@ -57,18 +54,17 @@ public class Item {
         this.box = box;
         this.rowSize = rowSize;
         this.colSize = colSize;
-        this.path = path;
         if (TABLE.equals(type)) {
             tableItems = TableItems.of();
         }
     }
 
-    private Item(int seq, String type, String name, String value, Box box, Long rowSize, Long colSize, String path) {
-        this(DEFAULT_ID, seq, type, name, value, box, rowSize, colSize, path);
+    private Item(int seq, String type, String name, String value, Box box, Long rowSize, Long colSize) {
+        this(DEFAULT_ID, seq, type, name, value, box, rowSize, colSize);
     }
 
     private Item(int seq, String type, String name, String value, Box box) {
-        this(DEFAULT_ID, seq, type, name, value, box, DEFAULT_SIZE, DEFAULT_SIZE, DEFAULT_PATH);
+        this(DEFAULT_ID, seq, type, name, value, box, DEFAULT_SIZE, DEFAULT_SIZE);
     }
 
     public static Item of(ItemRequest itemRequest) {
@@ -76,15 +72,15 @@ public class Item {
     }
 
     public static Item of() {
-        return new Item(DEFAULT_SEQ, null, null, null, null, DEFAULT_SIZE, DEFAULT_SIZE, DEFAULT_PATH);
+        return new Item(DEFAULT_SEQ, null, null, null, null, DEFAULT_SIZE, DEFAULT_SIZE);
     }
 
-    public static Item of(int seq, String type, String name, String value, Box box, Long rowSize, Long colSize, String path) {
-        return new Item(seq, type, name, value, box, rowSize, colSize, path);
+    public static Item of(int seq, String type, String name, String value, Box box, Long rowSize, Long colSize) {
+        return new Item(seq, type, name, value, box, rowSize, colSize);
     }
 
-    public static Item of(Long id, int seq, String type, String name, String value, Box box, Long rowSize, Long colSize, String path) {
-        return new Item(id, seq, type, name, value, box, rowSize, colSize, path);
+    public static Item of(Long id, int seq, String type, String name, String value, Box box, Long rowSize, Long colSize) {
+        return new Item(id, seq, type, name, value, box, rowSize, colSize);
     }
 
     public String setDefaultName() {
@@ -123,7 +119,6 @@ public class Item {
         return colSize;
     }
 
-    public String getPath(){return path;}
 
     public void setBox(Box box) {
         if (Objects.nonNull(this.box)) {
@@ -156,9 +151,6 @@ public class Item {
     public void changeColSize(long colSize) {
         this.colSize = colSize;
     }
-    public void changePath(String path) {
-        this.path = path;
-    }
     public void changeItem(Item item) {
         this.seq = item.seq;
         this.type = item.type;
@@ -167,7 +159,6 @@ public class Item {
         this.box = item.box;
         this.rowSize = item.rowSize;
         this.colSize = item.colSize;
-        this.path=item.path;
     }
 
     public void increaseSeq(int seq) {
@@ -177,4 +168,5 @@ public class Item {
     public void decreaseSeq(int seq) {
         this.seq = seq - 1;
     }
+
 }
