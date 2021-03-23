@@ -48,9 +48,9 @@ public class DocumentService {
 
     @Transactional
     public void deleteBySortationId(Long id) {
-        List<Long> DocumentId = documentRepository.findBySortationId(id);
-        for (Long documentId : DocumentId) {
-            boxService.deleteByDocumentId(documentId);
+        List<Document> Document = documentRepository.findBySortationId(id);
+        for (Document document : Document) {
+            boxService.deleteByDocumentId(document.getId());
         }
         documentRepository.deleteBySortationId(id);
     }

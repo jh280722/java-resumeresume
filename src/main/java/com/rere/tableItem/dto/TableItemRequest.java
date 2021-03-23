@@ -5,27 +5,27 @@ import com.rere.item.domain.Item;
 
 public class TableItemRequest {
 
-    private Long row;
-    private Long column;
+    private Long tableRow;
+    private Long tableCol;
     private String value;
     private Item item;
 
     public TableItemRequest() {
     }
 
-    public TableItemRequest(Long row, Long column, String value, Item item) {
-        this.row = row;
-        this.column = column;
+    public TableItemRequest(Long tableRow, Long tableCol, String value, Item item) {
+        this.tableRow = tableRow;
+        this.tableCol = tableCol;
         this.value = value;
         this.item = item;
     }
 
-    public Long getRow() {
-        return row;
+    public Long getTableRow() {
+        return tableRow;
     }
 
-    public Long getColumn() {
-        return column;
+    public Long getTableCol() {
+        return tableCol;
     }
 
     public String getValue() {

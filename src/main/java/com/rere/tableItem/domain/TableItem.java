@@ -15,10 +15,10 @@ public class TableItem {
     private Long id;
 
     @Column(nullable = false)
-    private Long row;
+    private Long tableRow;
 
     @Column(nullable = false)
-    private Long column;
+    private Long tableCol;
 
     private String value;
 
@@ -29,16 +29,16 @@ public class TableItem {
     protected TableItem() {
     }
 
-    private TableItem(Long id, Long row, Long column, String value, Item item) {
+    private TableItem(Long id, Long tableRow, Long tableCol, String value, Item item) {
         this.id = id;
-        this.row = row;
-        this.column = column;
+        this.tableRow = tableRow;
+        this.tableCol = tableCol;
         this.value = value;
         this.item = item;
     }
 
-    private TableItem(Long row, Long column, String value, Item item) {
-        this(DEFAULT_ID, row, column, value, item);
+    private TableItem(Long tableRow, Long tableCol, String value, Item item) {
+        this(DEFAULT_ID, tableRow, tableCol, value, item);
     }
 
     public static TableItem of() {
@@ -46,31 +46,31 @@ public class TableItem {
     }
 
     public static TableItem of(TableItemRequest tableItemRequest) {
-        return new TableItem(tableItemRequest.getRow(), tableItemRequest.getColumn(), tableItemRequest.getValue(), tableItemRequest.getItem());
+        return new TableItem(tableItemRequest.getTableRow(), tableItemRequest.getTableCol(), tableItemRequest.getValue(), tableItemRequest.getItem());
     }
 
-    public static TableItem of(Long row, Long column, String value, Item item) {
-        return new TableItem(row, column, value, item);
+    public static TableItem of(Long tableRow, Long tableCol, String value, Item item) {
+        return new TableItem(tableRow, tableCol, value, item);
     }
 
     public static TableItem of(String value, Item item) {
         return new TableItem(DEFAULT_RowColumn, DEFAULT_RowColumn, value, item);
     }
 
-    public static TableItem of(Long id, Long row, Long column, String value, Item item) {
-        return new TableItem(id, row, column, value, item);
+    public static TableItem of(Long id, Long tableRow, Long tableCol, String value, Item item) {
+        return new TableItem(id, tableRow, tableCol, value, item);
     }
 
     public Long getId() {
         return id;
     }
 
-    public Long getRow() {
-        return row;
+    public Long getTableRow() {
+        return tableRow;
     }
 
-    public Long getColumn() {
-        return column;
+    public Long getTableCol() {
+        return tableCol;
     }
 
     public String getValue() {
@@ -97,17 +97,17 @@ public class TableItem {
         this.item = item;
     }
 
-    public void changeRow(Long row) {
-        this.row = row;
+    public void changeTableRow(Long tableRow) {
+        this.tableRow = tableRow;
     }
 
-    public void changeColumn(Long column) {
-        this.column = column;
+    public void changeTableCol(Long tableCol) {
+        this.tableCol = tableCol;
     }
 
     public void changeTableItem(TableItem tableItem) {
-        this.row = tableItem.row;
-        this.column = tableItem.column;
+        this.tableRow = tableItem.tableRow;
+        this.tableCol = tableItem.tableCol;
         this.value = tableItem.value;
         this.item = tableItem.item;
     }

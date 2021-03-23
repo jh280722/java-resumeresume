@@ -36,14 +36,14 @@ public class TableItemService {
         updateTableItem.changeTableItem(tableItem);
     }
 
-    public void updateRow(Long id, Long row) {
+    public void updateTableRow(Long id, Long tableRow) {
         TableItem tableitem = tableItemRepository.findById(id).orElse(null);
-        tableitem.changeRow(row);
+        tableitem.changeTableRow(tableRow);
     }
 
-    public void updateColumn(Long id, Long Column) {
+    public void updateTableCol(Long id, Long tableCol) {
         TableItem tableitem = tableItemRepository.findById(id).orElse(null);
-        tableitem.changeColumn(Column);
+        tableitem.changeTableCol(tableCol);
     }
 
     public void updateValue(Long id, String value) {

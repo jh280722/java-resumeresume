@@ -77,7 +77,7 @@ public class ItemRepositoryTest {
         Sortation sortation= sortations.save(Sortation.of("sortation",user));
         Document document = documents.save(Document.of("document",sortation));
         Box box = boxes.save(Box.of("box", document));
-        item = items.save(Item.of(0, "text", "이름", "준호", Box.of(box.getId(),box.getName(),box.getDocument())));
+        item = items.save(Item.of(0, "text", "이름", "준호", Box.of(box.getId(),box.getName(),box.getDocument()),0L,0L,""));
     }
 
     @Test
@@ -113,10 +113,10 @@ public class ItemRepositoryTest {
         Document document = documents.save(Document.of("document",sortation));
         Box box = boxes.save(Box.of("box", document));
 
-        Item item0 = items.save(Item.of(0, "text", "ho", "jun", box));
-        Item item1 = items.save(Item.of(1, "text", "ho", "jun", box));
-        Item item2 = items.save(Item.of(2, "text", "ho", "jun", box));
-        Item item3 = items.save(Item.of(3, "text", "ho", "jun", box));
+        Item item0 = items.save(Item.of(0, "text", "ho", "jun", box,0L,0L,""));
+        Item item1 = items.save(Item.of(1, "text", "ho", "jun", box,0L,0L,""));
+        Item item2 = items.save(Item.of(2, "text", "ho", "jun", box,0L,0L,""));
+        Item item3 = items.save(Item.of(3, "text", "ho", "jun", box,0L,0L,""));
         itemsTest = Items.of(Arrays.asList(
                 item0, item3, item2, item1));
 
@@ -147,7 +147,7 @@ public class ItemRepositoryTest {
         Document document = documents.save(Document.of("document", sortation));
         Box box = boxes.save(Box.of("box", document));
         final Item expected = items.save(
-                Item.of(0, "textArea", "자기소개", "hi", box));
+                Item.of(0, "textArea", "자기소개", "hi", box,0L,0L,""));
         expected.setBox(boxes.save(Box.of("updateBox", document)));
         items.flush();
         assertThat(expected.getBox().getName()).isEqualTo("updateBox");
