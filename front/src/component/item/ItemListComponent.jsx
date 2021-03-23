@@ -43,7 +43,42 @@ const ItemDel = styled(Close)`
     height : 25px;
 `;
 
+const AddItem = styled.div`
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content : space-between;
+    select{
+        height : 40px;
+        width : 100px;
+        font-size : 15px;
+        margin : 5px;
+    }
+`;
 
+const TextDiv = styled.div`
+    border-top : 1px solid gray;
+    border-bottom : 1px solid gray;
+    padding-top : 10px;
+    padding-bottom : 10px;
+    display : flex;
+    justify-content : space-between;
+    width : 100%;
+    #name{
+        height :30px;
+        margin-right : 5px;
+        flex: 1;
+    }
+
+    #value{
+        height :30px;
+        flex: 10;
+    }
+
+    button{
+        flex: 1;
+    }
+`;
 
 function ItemlistComponent(props) {
     const [state, setState] = useState({
@@ -57,6 +92,7 @@ function ItemlistComponent(props) {
     });
     const [btnState, setBtnState] = useState(false);
     const [grab, setGrab] = useState(null);
+    const [imageState, setImageState] = useState(null);
 
     useEffect(() => {
         ApiService.fetchBoxesByID(props.boxID)
@@ -182,8 +218,9 @@ function ItemlistComponent(props) {
                         <ItemDel onClick={() => deleteItem(item.id)}>Delete</ItemDel>
                     </div>
                 )}
-                <div>
+                <AddItem>
                     <select
+                        id="typeSelect"
                         name={"type"}
                         value={state.type}
                         displayEmpty
@@ -198,11 +235,11 @@ function ItemlistComponent(props) {
                         <option value={"period"}>기간</option>
                     </select>
                     {{
-                        text: (<>
-                            <input type="text" name={"name"} value={state.name} onChange={onChange} />
-                            <input type="text" name={"value"} value={state.value} onChange={onChange} />
+                        text: (<TextDiv>
+                            <input type="text" id="name" name={"name"} value={state.name} onChange={onChange} />
+                            <input type="text" id="value" name={"value"} value={state.value} onChange={onChange} />
                             <button onClick={saveItem} data-boxid={state.box.id} data-boxname={state.box.name}>Save</button>
-                        </>),
+                        </TextDiv>),
                         textArea: (<>
                             <input type="text" name={"name"} value={state.name} onChange={onChange} />
                             <input type="text" name={"value"} value={state.value} onChange={onChange} />
@@ -215,7 +252,7 @@ function ItemlistComponent(props) {
                         </>),
                         image: (<>
                             <input type="text" name={"name"} value={state.name} onChange={onChange} />
-                            <input type="text" name={"value"} value={state.value} onChange={onChange} />
+                            <input type="file" accept="image/jpeg, image/jpg" onChange={imageState} />
                             <button onClick={saveItem} data-boxid={state.box.id} data-boxname={state.box.name}>Save</button>
                         </>),
                         period: (<>
@@ -224,7 +261,7 @@ function ItemlistComponent(props) {
                             <button onClick={saveItem} data-boxid={state.box.id} data-boxname={state.box.name}>Save</button>
                         </>),
                     }[state.type]}
-                </div>
+                </AddItem>
             </div>
         </Box>
     )

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import ItemlistComponent from './ItemListComponent';
 import ApiService from '../../ApiService';
-import styled from 'styled-components';
+import styled,{css} from 'styled-components';
 import {Close} from '@styled-icons/ionicons-sharp/Close';
 import {PlusCircleFill}from '@styled-icons/bootstrap/PlusCircleFill'
 
@@ -26,13 +26,18 @@ const BoxContainer = styled.div`
 
 const AddBoxBtn = styled.div`
     align-self : center;
-    display : flex;
+    display : none;
     flex-direction:column;
     input{
         height : 30px;
         width : 150px;
         font-size : 25px;
     }
+    ${props =>
+        props.addBoxState &&
+        css`
+            display:flex;
+        `}
 `;
 
 const Itemlist = styled.div`
@@ -57,6 +62,7 @@ function BoxListComponent(props){
     const [boxes, setBoxes] = useState([]);
     const [docs, setDocs] = useState([]);
     const [boxName, setBoxName] = useState("");
+    const [addBoxState, setAddBoxState] = useState(false);
     const [btnState, setBtnState] = useState(false); // onClick 이벤트 시 렌더링을 시키기 위한 상태 변화 확인용 state
 
     useEffect(() => {
@@ -64,6 +70,9 @@ function BoxListComponent(props){
             .then(res => {
                 setDocs(res.data);
                 setBoxes(res.data.boxes);
+                if(props.docID != 0){
+                    setAddBoxState(true);
+                }
             })
             .catch(err => {
                 console.log('reloadBoxList() Error! ',err);
@@ -116,7 +125,7 @@ function BoxListComponent(props){
                     </BoxContainer>
                 )}
             </div>
-            <AddBoxBtn>
+            <AddBoxBtn addBoxState={addBoxState}>
                 <input type="text" placeholder="항목 이름" name={"setBoxName"} value={boxName} onChange={onChangeBoxName}/>
                 <BoxPlus onClick={addBox}>박스 추가</BoxPlus>
             </AddBoxBtn>

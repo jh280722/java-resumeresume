@@ -56,7 +56,7 @@ const DocPlus = styled(PlusCircleFill)`
     margin : 10px;
 `;
 
-// 박스 리스트 출력 컴포넌트
+// Document 리스트 출력 컴포넌트
 function DocumentListComponent(){
     const [documents, setDocuments] = useState([]);
     const [documentId, setDocumentId] = useState("0");
