@@ -4,7 +4,6 @@ import com.rere.user.domain.User;
 
 public class SortationRequest {
     private String name;
-    private User user;
 
     public SortationRequest() {
     }
@@ -17,7 +16,4 @@ public class SortationRequest {
         return name;
     }
 
-    public User getUser() {
-        return user;
-    }
 }
