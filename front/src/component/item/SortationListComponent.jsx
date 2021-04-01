@@ -4,14 +4,17 @@ import ApiService from '../../ApiService';
 
 function SortationListComponent(props){
     const [sortations, setSortations] = useState([]);
-    const [sortationId, setSortationId] = useState("0");
+    const [sortationId, setSortationId] = useState("1");
     const [sortationName, setSortationName] = useState("");
+    const [userData, setUser] = useState([]);
     const [btnState, setBtnState] = useState(false); // onClick 이벤트 시 렌더링을 시키기 위한 상태 변화 확인용 state
 
     useEffect(() => {
-        ApiService.fetchSortations()
+        ApiService.fetchUserByID(1)
         .then(res => {
-            setSortations(res.data);
+            setUser(res.data);
+            setSortations(res.data.sortations);
+            console.log(res.data.sortations);
         })
         .catch(err => {
             console.log('reloadSortList() Error! ',err);
@@ -21,7 +24,7 @@ function SortationListComponent(props){
     const addSort = (e) =>{
         e.preventDefault();
         let sortation ={
-            name: sortationName
+            name: sortationName,
         }
         ApiService.addSortation(sortation)
         .then(res => {
@@ -62,6 +65,7 @@ function SortationListComponent(props){
             )}
             <input type="text" placeholder="항목 이름" name={"setSortationName"} value={sortationName} onChange={onChangeSortName} />
             <button onClick={addSort}>Sortation 추가</button>
+            <DocumentListComponent sortId={sortationId}></DocumentListComponent>
         </div>
     )
 }

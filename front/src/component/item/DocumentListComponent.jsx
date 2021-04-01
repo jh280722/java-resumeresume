@@ -57,16 +57,18 @@ const DocPlus = styled(PlusCircleFill)`
 `;
 
 // Document 리스트 출력 컴포넌트
-function DocumentListComponent(){
+function DocumentListComponent(props){
+    const [sortation,setSortation] = useState([]);
     const [documents, setDocuments] = useState([]);
     const [documentId, setDocumentId] = useState("0");
     const [documentName, setDocumentName] = useState("");
     const [btnState, setBtnState] = useState(false); // onClick 이벤트 시 렌더링을 시키기 위한 상태 변화 확인용 state
 
     useEffect(() => {
-        ApiService.fetchDocuments()
+        ApiService.fetchSortationsByID(props.sortId)
         .then(res => {
-            setDocuments(res.data);
+            setSortation(res.data);
+            setDocuments(res.data.documents);
         })
         .catch(err => {
             console.log('reloadBoxList() Error! ',err);
@@ -75,8 +77,13 @@ function DocumentListComponent(){
 
     const addDoc = (e) =>{
         e.preventDefault();
+        let targetSortation ={
+            id: sortation.id,
+            name: sortation.name,
+        }
         let document ={
-            name: documentName
+            name: documentName,
+            sortation: targetSortation
         }
         ApiService.addDocument(document)
         .then(res => {

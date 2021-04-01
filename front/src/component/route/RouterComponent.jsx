@@ -1,7 +1,7 @@
   
 import React from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import DocumentListComponent from "../item/DocumentListComponent";
+import SortationListComponent from '../item/SortationListComponent';
 
 
 /*
@@ -22,8 +22,8 @@ function AppRouter(){
             <BrowserRouter>
                 <div>
                     <Switch>
-                        <Route exact path="/" component={DocumentListComponent} />
-                        <Route path="/items" component={DocumentListComponent} />
+                        <Route exact path="/" component={SortationListComponent} />
+                        <Route path="/main" component={SortationListComponent} />
                     </Switch>
                 </div>
             </BrowserRouter>

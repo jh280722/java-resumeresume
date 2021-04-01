@@ -93,6 +93,9 @@ function ItemlistComponent(props) {
     const [btnState, setBtnState] = useState(false);
     const [grab, setGrab] = useState(null);
     const [imageState, setImageState] = useState(null);
+    const [tableRow, setTableRowState] = useState(3);
+    const [tableCol, setTableColState] = useState(0);
+    const [tableValue, setTableValueState] = useState([]);
 
     useEffect(() => {
         ApiService.fetchBoxesByID(props.boxID)
@@ -123,6 +126,26 @@ function ItemlistComponent(props) {
             ...state,
             [e.target.name]: e.target.value
         });
+    }
+
+    const onRowChange = (e) => {
+        setTableRowState(Number(e.target.value));
+        setTableValueState([]);
+        setBtnState(!btnState);
+    }
+
+    const onColChange = (e) => {
+        setTableColState(Number(e.target.value));
+        setTableValueState([]);
+        setBtnState(!btnState);
+    }
+
+    const onValueChange = (e) => {
+        setTableValueState({
+            ...tableValue,
+            [e.target.dataset.col + "/" + e.target.dataset.row] : e.target.value
+        });
+        console.log(tableValue);
     }
 
     const onReset = () => {
@@ -214,6 +237,7 @@ function ItemlistComponent(props) {
                             date: (<p>{item.name} : {item.value}</p>),
                             image: (<p>{item.name} : {item.value}</p>),
                             period: (<p>{item.name} : {item.value}</p>),
+                            table: (<p>{item.name} : {item.value}</p>),
                         }[item.type]}
                         <ItemDel onClick={() => deleteItem(item.id)}>Delete</ItemDel>
                     </div>
@@ -233,11 +257,12 @@ function ItemlistComponent(props) {
                         <option value={"date"}>날짜</option>
                         <option value={"image"}>이미지</option>
                         <option value={"period"}>기간</option>
+                        <option value={"table"}>표</option>
                     </select>
                     {{
                         text: (<TextDiv>
-                            <input type="text" id="name" name={"name"} value={state.name} onChange={onChange} />
-                            <input type="text" id="value" name={"value"} value={state.value} onChange={onChange} />
+                            <input type="text" id="name" name={"name"} onChange={onChange} />
+                            <input type="text" id="value" name={"value"} onChange={onChange} />
                             <button onClick={saveItem} data-boxid={state.box.id} data-boxname={state.box.name}>Save</button>
                         </TextDiv>),
                         textArea: (<>
@@ -259,6 +284,19 @@ function ItemlistComponent(props) {
                             <input type="text" name={"name"} value={state.name} onChange={onChange} />
                             <input type="text" name={"value"} value={state.value} onChange={onChange} />
                             <button onClick={saveItem} data-boxid={state.box.id} data-boxname={state.box.name}>Save</button>
+                        </>),
+                        table: (<>
+                            <input type="text" name={"row"} value={tableRow} onChange={onRowChange} />
+                            <input type="text" name={"col"} value={tableCol} onChange={onColChange} />
+                            <table border="1">
+                                {[...Array(tableCol)].map((colN,colIndex) =>
+                                    <tr>
+                                        {[...Array(tableRow)].map((rowN,rowIndex) =>
+                                            <th><input type="text" data-col={colIndex+1} data-row={rowIndex+1} onChange={onValueChange}/></th>
+                                        )}
+                                    </tr>
+                                )}
+                            </table>
                         </>),
                     }[state.type]}
                 </AddItem>
