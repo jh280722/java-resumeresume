@@ -6,7 +6,6 @@ const ITEM_API_BASE_URL = "http://localhost:8080/items";
 const BOX_API_BASE_URL = "http://localhost:8080/boxes";
 const DOC_API_BASE_URL = "http://localhost:8080/documents";
 const SORT_API_BASE_URL = "http://localhost:8080/sortations";
-const USER_API_BASE_URL = "http://localhost:8080/users";
 
 class ApiService{
 
