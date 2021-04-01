@@ -45,9 +45,9 @@ function SignIn(pros) {
             <h1>로그인</h1>
             <hr/>
             <label>email : </label>
-            <input type="text" name={"email"} value={userToken.email} onChange={onChange} required/><br/>
+            <input type="text" name={"email"} onChange={onChange} required/><br/>
             <label>password : </label>
-            <input type="password" name={"password"} value={userToken.password} onChange={onChange} required/><br/>
+            <input type="password" name={"password"} onChange={onChange} required/><br/>
 
             <div>
                 <button onClick={login}>로그인</button>
