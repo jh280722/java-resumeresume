@@ -4,7 +4,7 @@ import ApiService from "../../ApiService";
 
 const HTTP_CREATED = 201;
 
-function SignUp(pros) {
+function SignUpComponent(pros) {
     const [user, setUser] = useState({
         name: "",
         email: "",
@@ -68,4 +68,4 @@ function SignUp(pros) {
     )
 }
 
-export default SignUp;
+export default SignUpComponent;

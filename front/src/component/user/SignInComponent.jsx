@@ -4,7 +4,7 @@ import ApiService from "../../ApiService";
 const HTTP_OK = 200;
 const HTTP_UNAUTHORIZED = 401;
 
-function SignIn(pros) {
+function SignInComponent(pros) {
     const [userToken, setUserToken] = useState({
         email: "",
         password: "",
@@ -56,4 +56,4 @@ function SignIn(pros) {
     )
 }
 
-export default SignIn;
+export default SignInComponent;
