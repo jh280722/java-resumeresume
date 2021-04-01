@@ -10,6 +10,9 @@ import com.rere.document.domain.Document;
 import com.rere.document.domain.DocumentRepository;
 import com.rere.document.dto.DocumentRequest;
 import com.rere.document.dto.DocumentResponse;
+import com.rere.image.dto.ImageRequest;
+import com.rere.image.dto.ImageResponse;
+import com.rere.item.domain.Item;
 import com.rere.item.dto.ItemRequest;
 import com.rere.item.dto.ItemResponse;
 import com.rere.sortation.domain.Sortation;
@@ -52,6 +55,7 @@ public class BoxAcceptanceTest extends AcceptanceTest {
     private TokenResponse user;
     private SortationResponse sortation;
     private DocumentResponse document;
+    private BoxRequest boxRequest1;
 
 
     @BeforeEach
@@ -62,6 +66,7 @@ public class BoxAcceptanceTest extends AcceptanceTest {
         user = 로그인되어_있음(EMAIL, PASSWORD);
         sortation = 구분_등록되어_있음(user, "sortation");
         document = 문서_등록되어_있음(user, "document", sortation);
+        boxRequest1 = new BoxRequest( "boxRQ",Document.of(document.getId(),document.getName(),document.getSortation()));
 
     }
 
@@ -96,13 +101,12 @@ public class BoxAcceptanceTest extends AcceptanceTest {
         // then
         박스_조회됨(findResponse);
 
-//        // when
-//        ExtractableResponse<Response> oldResponse = 문서_생성_요청(user, "강남역1", Sortation.of(sortation.getId(),sortation.getName(),sortation.getUser()));
-//        ExtractableResponse<Response> newResponse = 문서_생성_요청(user, "강남역2", Sortation.of(sortation.getId(),sortation.getName(),sortation.getUser()));
-//
-//        ExtractableResponse<Response> updateResponse = 문서_수정_요청(user,oldResponse,newResponse );
-//        // then
-//        문서_수정됨(updateResponse);
+        // when
+        ExtractableResponse<Response> oldResponse = 박스_생성_요청(user,"박스2", Document.of(document.getId(), document.getName(), document.getSortation()));
+
+        ExtractableResponse<Response> updateResponse = 박스_수정_요청(user,oldResponse.as(BoxResponse.class), boxRequest1);
+        // then
+        박스_수정됨(updateResponse);
 
         // when
         ExtractableResponse<Response> deleteResponse = 박스_삭제_요청(user, createResponse);

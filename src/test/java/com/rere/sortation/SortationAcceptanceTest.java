@@ -4,6 +4,9 @@ import com.rere.AcceptanceTest;
 import com.rere.auth.dto.TokenResponse;
 import com.rere.box.domain.Box;
 import com.rere.box.domain.BoxRepository;
+import com.rere.document.dto.DocumentRequest;
+import com.rere.document.dto.DocumentResponse;
+import com.rere.sortation.domain.Sortation;
 import com.rere.sortation.domain.SortationRepository;
 import com.rere.sortation.dto.SortationRequest;
 import com.rere.sortation.dto.SortationResponse;
@@ -40,12 +43,15 @@ public class SortationAcceptanceTest extends AcceptanceTest {
     private SortationResponse sortation1;
     private TokenResponse user;
 
+    private SortationRequest sortationRequest1;
     @BeforeEach
     public void setUp() {
         super.setUp();
         // given
         회원_등록되어_있음(EMAIL, PASSWORD, NAME);
         user = 로그인되어_있음(EMAIL, PASSWORD);
+
+        sortationRequest1 = new SortationRequest( "sortationTest");
     }
 
     @DisplayName("구분을 관리한다.")
@@ -60,6 +66,14 @@ public class SortationAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> findResponse = 구분_조회_요청(user);
         // then
         구분_조회됨(findResponse);
+
+        // when
+        ExtractableResponse<Response> oldResponse = 구분_생성_요청(user,"test");
+
+        ExtractableResponse<Response> updateResponse = 구분_수정_요청(user,oldResponse.as(SortationResponse.class), sortationRequest1);
+        // then
+        구분_수정됨(updateResponse);
+
 
         // when
         ExtractableResponse<Response> deleteResponse = 구분_삭제_요청(user, createResponse);
@@ -89,7 +103,16 @@ public class SortationAcceptanceTest extends AcceptanceTest {
                 .then().log().all()
                 .extract();
     }
-
+    private ExtractableResponse<Response> 구분_수정_요청(TokenResponse tokenResponse, SortationResponse sortationResponse, SortationRequest params) {
+        return RestAssured
+                .given().log().all()
+                .auth().oauth2(tokenResponse.getAccessToken())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(params)
+                .when().put("/sortations/" + sortationResponse.getId())
+                .then().log().all()
+                .extract();
+    }
     public static ExtractableResponse<Response> 구분_삭제_요청(TokenResponse tokenResponse, ExtractableResponse<Response> response) {
         return RestAssured
                 .given().log().all()
@@ -106,7 +129,9 @@ public class SortationAcceptanceTest extends AcceptanceTest {
     public static void 구분_조회됨(ExtractableResponse<Response> response) {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
-
+    private void 구분_수정됨(ExtractableResponse<Response> response) {
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+    }
     public static void 구분_삭제됨(ExtractableResponse<Response> response) {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }

@@ -10,19 +10,17 @@ public class ItemRequest {
     private Box box;
     private Long rowSize;
     private Long colSize;
-    private String path;
 
     public ItemRequest() {
     }
 
-    public ItemRequest(String type, String name, String value, Box box, Long rowSize, Long colSize,String path) {
+    public ItemRequest(String type, String name, String value, Box box, Long rowSize, Long colSize) {
         this.type = type;
         this.name = name;
         this.value = value;
         this.box = box;
         this.rowSize = rowSize;
         this.colSize = colSize;
-        this.path = path;
     }
 
     public String getValue() {
@@ -52,7 +50,6 @@ public class ItemRequest {
     public Long getColSize() {
         return colSize;
     }
-    public String getPath(){return path;}
 
 
 

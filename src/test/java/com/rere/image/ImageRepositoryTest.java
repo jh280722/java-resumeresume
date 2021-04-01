@@ -1,4 +1,4 @@
-package com.rere.item;
+package com.rere.image;
 
 import com.rere.auth.dto.TokenResponse;
 import com.rere.box.domain.Box;
@@ -17,7 +17,6 @@ import com.rere.sortation.domain.SortationRepository;
 import com.rere.sortation.dto.SortationResponse;
 import com.rere.user.domain.User;
 import com.rere.user.domain.UserRepository;
-import com.rere.user.dto.UserRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +24,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Arrays;
 
-import static com.rere.auth.AuthAcceptanceTest.로그인되어_있음;
-import static com.rere.auth.AuthAcceptanceTest.회원_등록되어_있음;
-import static com.rere.box.BoxAcceptanceTest.박스_등록되어_있음;
-import static com.rere.document.DocumentAcceptanceTest.문서_등록되어_있음;
-import static com.rere.sortation.SortationAcceptanceTest.구분_등록되어_있음;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-public class ItemRepositoryTest {
+public class ImageRepositoryTest {
 
     private static final String EMAIL = "email@email.com";
     private static final String PASSWORD = "password";

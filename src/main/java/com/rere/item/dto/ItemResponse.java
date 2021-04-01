@@ -12,12 +12,11 @@ public class ItemResponse {
     private Box box;
     private Long rowSize;
     private Long colSize;
-    private String path;
 
     public ItemResponse() {
     }
 
-    public ItemResponse(Long id, int seq, String type, String name, String value, Box box, Long rowSize, Long colSize, String path) {
+    public ItemResponse(Long id, int seq, String type, String name, String value, Box box, Long rowSize, Long colSize) {
         this.id = id;
         this.seq = seq;
         this.type = type;
@@ -26,11 +25,10 @@ public class ItemResponse {
         this.box = box;
         this.rowSize = rowSize;
         this.colSize = colSize;
-        this.path = path;
     }
 
     public static ItemResponse of(Item item) {
-        return new ItemResponse(item.getId(), item.getSeq(), item.getType(), item.getName(), item.getValue(), item.getBox(), item.getRowSize(), item.getColSize(), item.getPath());
+        return new ItemResponse(item.getId(), item.getSeq(), item.getType(), item.getName(), item.getValue(), item.getBox(), item.getRowSize(), item.getColSize());
     }
 
     public Long getId() {
@@ -61,9 +59,6 @@ public class ItemResponse {
         return colSize;
     }
 
-    public String getPath() {
-        return path;
-    }
 
     public Box getBox() {
         return box;
