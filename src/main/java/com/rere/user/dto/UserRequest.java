@@ -34,6 +34,10 @@ public class UserRequest {
         return password;
     }
 
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
     public String getName() {
         return name;
     }
