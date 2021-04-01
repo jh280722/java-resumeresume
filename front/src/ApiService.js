@@ -1,11 +1,22 @@
 import axios from 'axios';
 
+const LOGIN_API_BASE_URL = "http://localhost:8080/login/token"
+const USER_API_BASE_URL = "http://localhost:8080/users";
 const ITEM_API_BASE_URL = "http://localhost:8080/items";
 const BOX_API_BASE_URL = "http://localhost:8080/boxes";
 const DOC_API_BASE_URL = "http://localhost:8080/documents";
 const SORT_API_BASE_URL = "http://localhost:8080/sortations";
 
 class ApiService{
+
+    createUser(user) {
+        return axios.post(USER_API_BASE_URL, user);
+    }
+
+    login(userToken) {
+        return axios.post(LOGIN_API_BASE_URL, userToken);
+    }
+
     // item 관리
     fetchItems(){
         return axios.get(ITEM_API_BASE_URL);

@@ -2,6 +2,8 @@
 import React from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import DocumentListComponent from "../item/DocumentListComponent";
+import SignIn from "../user/SignIn"
+import SignUp from "../user/SignUp"
 
 
 /*
@@ -24,6 +26,8 @@ function AppRouter(){
                     <Switch>
                         <Route exact path="/" component={DocumentListComponent} />
                         <Route path="/items" component={DocumentListComponent} />
+                        <Route path="/signin" component={SignIn} />
+                        <Route path="/signup" component={SignUp} />
                     </Switch>
                 </div>
             </BrowserRouter>

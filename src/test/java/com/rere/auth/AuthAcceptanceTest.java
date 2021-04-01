@@ -69,7 +69,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     }
 
     public static ExtractableResponse<Response> 회원_등록되어_있음(String email, String password, String name) {
-        return 회원_생성을_요청(email, password, name);
+        return 회원_생성을_요청(email, password, password, name);
     }
 
     public static TokenResponse 로그인되어_있음(String email, String password) {
