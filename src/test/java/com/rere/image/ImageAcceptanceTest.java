@@ -161,8 +161,8 @@ public class ImageAcceptanceTest extends AcceptanceTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 
-    public static ItemResponse 이미지_등록되어_있음(TokenResponse tokenResponse, String name, Long width, Long height, String path, String description, Item item) {
+    public static ImageResponse 이미지_등록되어_있음(TokenResponse tokenResponse, String name, Long width, Long height, String path, String description, Item item) {
         return 이미지_생성_요청(tokenResponse, name, width, height, path,description,Item.of(item.getSeq(), item.getName(),item.getType(),item.getValue() ,item.getBox(),item.getRowSize(),item.getColSize()))
-                .as(ItemResponse.class);
+                .as(ImageResponse.class);
     }
 }
