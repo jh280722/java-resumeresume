@@ -27,7 +27,7 @@ public class UserAcceptanceTest extends AcceptanceTest {
     @DisplayName("회원 정보를 관리한다.")
     @Test
     void manageUser() {
-        ExtractableResponse<Response> createResponse = 회원_생성을_요청(EMAIL, PASSWORD, NAME);
+        ExtractableResponse<Response> createResponse = 회원_생성을_요청(EMAIL, PASSWORD, PASSWORD, NAME);
         회원_생성됨(createResponse);
 
         TokenResponse 사용자 = 로그인되어_있음(EMAIL, PASSWORD);
@@ -35,15 +35,15 @@ public class UserAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> findResponse = 내_회원_정보_조회_요청(사용자);
         회원_정보_조회됨(findResponse, EMAIL, NAME);
 
-        ExtractableResponse<Response> updateResponse = 내_회원_정보_수정_요청(사용자, EMAIL, NEW_PASSWORD, NEW_NAME);
+        ExtractableResponse<Response> updateResponse = 내_회원_정보_수정_요청(사용자, EMAIL, NEW_PASSWORD, NEW_PASSWORD, NEW_NAME);
         회원_정보_수정됨(updateResponse);
 
         ExtractableResponse<Response> deleteResponse = 내_회원_삭제_요청(사용자);
         회원_삭제됨(deleteResponse);
     }
 
-    public static ExtractableResponse<Response> 회원_생성을_요청(String email, String password, String name) {
-        UserRequest userRequest = UserRequest.of(email, password, name);
+    public static ExtractableResponse<Response> 회원_생성을_요청(String email, String password, String passwordConfirm, String name) {
+        UserRequest userRequest = UserRequest.of(email, password, passwordConfirm, name);
 
         return RestAssured
                 .given().log().all()
@@ -65,8 +65,8 @@ public class UserAcceptanceTest extends AcceptanceTest {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> 내_회원_정보_수정_요청(TokenResponse tokenResponse, String email, String password, String name) {
-        UserRequest userRequest = UserRequest.of(email, password, name);
+    public static ExtractableResponse<Response> 내_회원_정보_수정_요청(TokenResponse tokenResponse, String email, String password, String passwordConfirm, String name) {
+        UserRequest userRequest = UserRequest.of(email, password, passwordConfirm, name);
 
         return RestAssured
                 .given().log().all()
