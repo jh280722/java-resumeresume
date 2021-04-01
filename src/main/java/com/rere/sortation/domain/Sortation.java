@@ -31,6 +31,10 @@ public class Sortation {
         this.name = name;
         this.user = user;
     }
+    private Sortation(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public static Sortation of() {
         return new Sortation();
@@ -38,7 +42,7 @@ public class Sortation {
 
 
     public static Sortation of(SortationRequest sortationRequest) {
-        return new Sortation(DEFAULT_ID, sortationRequest.getName(), sortationRequest.getUser());
+        return new Sortation(DEFAULT_ID, sortationRequest.getName());
     }
 
     public static Sortation of(String name, User user) {

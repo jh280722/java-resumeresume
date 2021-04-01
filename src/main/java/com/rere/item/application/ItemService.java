@@ -2,6 +2,8 @@ package com.rere.item.application;
 
 import com.rere.box.domain.Box;
 import com.rere.box.domain.BoxRepository;
+import com.rere.image.application.ImageService;
+import com.rere.image.domain.ImageRepository;
 import com.rere.item.domain.Item;
 import com.rere.item.domain.ItemRepository;
 import com.rere.item.dto.ItemRequest;
@@ -15,10 +17,12 @@ import java.util.stream.Collectors;
 public class ItemService {
     private final ItemRepository itemRepository;
     private final BoxRepository boxRepository;
+    private final ImageService imageService;
 
-    public ItemService(ItemRepository itemRepository, BoxRepository boxRepository) {
+    public ItemService(ItemRepository itemRepository, BoxRepository boxRepository, ImageService imageService) {
         this.itemRepository = itemRepository;
         this.boxRepository = boxRepository;
+        this.imageService = imageService;
     }
 
     public List<ItemResponse> findAll() {
@@ -63,6 +67,10 @@ public class ItemService {
     }
 
     public void deleteByBoxId(Long boxId) {
+        List<Item> Item = itemRepository.findByBoxId(boxId);
+        for (Item item : Item) {
+            imageService.deleteByItemId(item.getId());
+        }
         itemRepository.deleteByBoxId(boxId);
     }
 

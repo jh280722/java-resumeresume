@@ -53,6 +53,7 @@ public class DocumentAcceptanceTest extends AcceptanceTest {
 
     private TokenResponse user;
     private SortationResponse sortation;
+    private DocumentRequest documentRequest1;
 
     private BoxRequest box1;
     private DocumentRequest document1;
@@ -72,6 +73,7 @@ public class DocumentAcceptanceTest extends AcceptanceTest {
         user = 로그인되어_있음(EMAIL, PASSWORD);
         sortation = 구분_등록되어_있음(user, "sortation");
 
+        documentRequest1 = new DocumentRequest( "documentRQ",Sortation.of(sortation.getId(),sortation.getName(),sortation.getUser()));
 
 //        box = boxes.save(Box.of("box", document));
 //        JHText = 아이템_등록되어_있음("text", "이름", "준호", box);
@@ -96,13 +98,12 @@ public class DocumentAcceptanceTest extends AcceptanceTest {
         // then
         문서_조회됨(findResponse);
 
-//        // when
-//        ExtractableResponse<Response> oldResponse = 문서_생성_요청(user, "강남역1", Sortation.of(sortation.getId(),sortation.getName(),sortation.getUser()));
-//        ExtractableResponse<Response> newResponse = 문서_생성_요청(user, "강남역2", Sortation.of(sortation.getId(),sortation.getName(),sortation.getUser()));
-//
-//        ExtractableResponse<Response> updateResponse = 문서_수정_요청(user,oldResponse,newResponse );
-//        // then
-//        문서_수정됨(updateResponse);
+        // when
+        ExtractableResponse<Response> oldResponse = 문서_생성_요청(user,"test", Sortation.of(sortation.getId(),sortation.getName(),sortation.getUser()));
+
+        ExtractableResponse<Response> updateResponse = 문서_수정_요청(user,oldResponse.as(DocumentResponse.class), documentRequest1);
+        // then
+        문서_수정됨(updateResponse);
 
         // when
         ExtractableResponse<Response> deleteResponse = 문서_삭제_요청(user, createResponse);
