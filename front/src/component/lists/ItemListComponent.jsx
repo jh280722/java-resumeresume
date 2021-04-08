@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ApiService from '../../ApiService';
-import {Close} from '@styled-icons/ionicons-sharp/Close';
+import { Close } from '@styled-icons/ionicons-sharp/Close';
 
 const Box = styled.div`
     #boxName{
@@ -80,6 +80,127 @@ const TextDiv = styled.div`
     }
 `;
 
+const Text = styled.div`
+    display : flex;
+    align-items : center;
+    #name{
+        border-right : 1px solid gray;
+        padding-right : 10px;
+        padding-left : 10px;
+        color: #3B3B3B;
+        font-weight : bold;
+        font-size : 18px;
+    }
+    #value{
+        padding-right : 10px;
+        padding-left : 10px;
+        color: #3B3B3B;
+        font-weight : normal;
+        font-size : 15px;
+        word-break:break-all;
+    }
+`;
+
+const TextArea = styled.div`
+    display : flex;
+    flex-direction:column;
+    #name{
+        margin-left : 10px;
+        margin-bottom : 0px;
+        color: #3B3B3B;
+        font-weight : bold;
+        font-size : 18px;
+    }
+    #value{
+        padding-right : 10px;
+        padding-left : 10px;
+        color: #3B3B3B;
+        font-weight : normal;
+        font-size : 15px;
+        word-break:break-all;
+    }
+`;
+
+const Date = styled.div`
+    display : flex;
+    align-items : center;
+    #name{
+        border-right : 1px solid gray;
+        padding-right : 10px;
+        padding-left : 10px;
+        color: #3B3B3B;
+        font-weight : bold;
+        font-size : 18px;
+    }
+    #value{
+        padding-right : 10px;
+        padding-left : 10px;
+        color: #3B3B3B;
+        font-weight : normal;
+        font-size : 15px;
+    }
+`;
+
+const Image = styled.div`
+    display : flex;
+    align-items : center;
+    #name{
+        border-right : 1px solid gray;
+        padding-right : 10px;
+        padding-left : 10px;
+        color: #3B3B3B;
+        font-weight : bold;
+        font-size : 18px;
+    }
+    #value{
+        padding-right : 10px;
+        padding-left : 10px;
+        color: #3B3B3B;
+        font-weight : normal;
+        font-size : 15px;
+    }
+`;
+
+const Period = styled.div`
+    display : flex;
+    align-items : center;
+    #name{
+        border-right : 1px solid gray;
+        padding-right : 10px;
+        padding-left : 10px;
+        color: #3B3B3B;
+        font-weight : bold;
+        font-size : 18px;
+    }
+    #value{
+        padding-right : 10px;
+        padding-left : 10px;
+        color: #3B3B3B;
+        font-weight : normal;
+        font-size : 15px;
+    }
+`;
+
+const Table = styled.div`
+    display : flex;
+    align-items : center;
+    #name{
+        border-right : 1px solid gray;
+        padding-right : 10px;
+        padding-left : 10px;
+        color: #3B3B3B;
+        font-weight : bold;
+        font-size : 18px;
+    }
+    #value{
+        padding-right : 10px;
+        padding-left : 10px;
+        color: #3B3B3B;
+        font-weight : normal;
+        font-size : 15px;
+    }
+`;
+
 function ItemlistComponent(props) {
     const [state, setState] = useState({
         box: [],
@@ -93,9 +214,10 @@ function ItemlistComponent(props) {
     const [btnState, setBtnState] = useState(false);
     const [grab, setGrab] = useState(null);
     const [imageState, setImageState] = useState(null);
-    const [tableRow, setTableRowState] = useState(3);
+    const [tableRow, setTableRowState] = useState(0);
     const [tableCol, setTableColState] = useState(0);
     const [tableValue, setTableValueState] = useState([]);
+    const [tableItems, setTableItemsState] = useState([]);
 
     useEffect(() => {
         ApiService.fetchBoxesByID(props.boxID)
@@ -143,9 +265,8 @@ function ItemlistComponent(props) {
     const onValueChange = (e) => {
         setTableValueState({
             ...tableValue,
-            [e.target.dataset.col + "/" + e.target.dataset.row] : e.target.value
+            [e.target.dataset.col + "/" + e.target.dataset.row]: e.target.value
         });
-        console.log(tableValue);
     }
 
     const onReset = () => {
@@ -179,6 +300,49 @@ function ItemlistComponent(props) {
             .catch(err => {
                 console.log('saveItem 에러', err);
             });
+    }
+
+    const saveTableItem = (e) =>{
+        e.preventDefault();
+        let targetBox = {
+            id: e.target.dataset.boxid,
+            name: e.target.dataset.boxname,
+        }
+        let itemData ={
+            type: state.type,
+            name: state.name,
+            rowSize:tableRow,
+            colSize:tableCol,
+            box: targetBox,
+        }
+        ApiService.addItem(itemData)
+            .then(res => {
+                onReset();
+                setBtnState(!btnState);
+            })
+            .catch(err => {
+                console.log('saveItem 에러', err);
+            });
+        for(var i=1;i<tableRow+1;i++){
+            for(var j = 1; j<tableCol+1;j++){
+                let tableItem = {
+                    tableRow:i,
+                    tableCol:j,
+                    value:tableValue[i+"/"+j],
+                    item:itemData,
+                }
+                tableItems.push(tableItem);
+            }
+        }
+        ApiService.addTableItem(tableItems)
+            .then(res => {
+                onReset();
+                setBtnState(!btnState);
+            })
+            .catch(err => {
+                console.log('addTableItem 에러', err);
+            });
+        console.log(tableItems);
     }
 
     const _onDragOver = e => {
@@ -229,15 +393,30 @@ function ItemlistComponent(props) {
                     >
                         {{
                             text: (
-                                <div id="textItem">
-                                    <p id="textItemName">{item.name}</p>
-                                    <p id="textItemValue">{item.value}</p>
-                                </div>),
-                            textArea: (<p>{item.name} : {item.value}</p>),
-                            date: (<p>{item.name} : {item.value}</p>),
-                            image: (<p>{item.name} : {item.value}</p>),
-                            period: (<p>{item.name} : {item.value}</p>),
-                            table: (<p>{item.name} : {item.value}</p>),
+                                <Text>
+                                    <p id="name">{item.name}</p>
+                                    <p id="value">{item.value}</p>
+                                </Text>),
+                            textArea: (<TextArea>
+                                <p id="name">{item.name}</p>
+                                <div id="value"><p>{item.value}</p></div>
+                            </TextArea>),
+                            date: (<Date>
+                                <p id="name">{item.name}</p>
+                                <p id="value">{item.value}</p>
+                            </Date>),
+                            image: (<Image>
+                                <p id="name">{item.name}</p>
+                                <p id="value">{item.value}</p>
+                            </Image>),
+                            period: (<Period>
+                                <p id="name">{item.name}</p>
+                                <p id="value">{item.value}</p>
+                            </Period>),
+                            table: (<Table>
+                                <p id="name">{item.name}</p>
+                                <p id="value">{item.value}</p>
+                            </Table>),
                         }[item.type]}
                         <ItemDel onClick={() => deleteItem(item.id)}>Delete</ItemDel>
                     </div>
@@ -286,17 +465,18 @@ function ItemlistComponent(props) {
                             <button onClick={saveItem} data-boxid={state.box.id} data-boxname={state.box.name}>Save</button>
                         </>),
                         table: (<>
-                            <input type="text" name={"row"} value={tableRow} onChange={onRowChange} />
-                            <input type="text" name={"col"} value={tableCol} onChange={onColChange} />
+                            <p>행</p><input type="text" name={"row"} value={tableRow} onChange={onRowChange} />
+                            <p>열</p><input type="text" name={"col"} value={tableCol} onChange={onColChange} />
                             <table border="1">
-                                {[...Array(tableCol)].map((colN,colIndex) =>
+                                {[...Array(tableCol)].map((colN, colIndex) =>
                                     <tr>
-                                        {[...Array(tableRow)].map((rowN,rowIndex) =>
-                                            <th><input type="text" data-col={colIndex+1} data-row={rowIndex+1} onChange={onValueChange}/></th>
+                                        {[...Array(tableRow)].map((rowN, rowIndex) =>
+                                            <th><input type="text" data-col={colIndex + 1} data-row={rowIndex + 1} onChange={onValueChange} /></th>
                                         )}
                                     </tr>
                                 )}
                             </table>
+                            <button onClick={saveTableItem} data-boxid={state.box.id} data-boxname={state.box.name}>Save</button>
                         </>),
                     }[state.type]}
                 </AddItem>

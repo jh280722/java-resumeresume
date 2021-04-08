@@ -6,6 +6,7 @@ const ITEM_API_BASE_URL = "http://localhost:8080/items";
 const BOX_API_BASE_URL = "http://localhost:8080/boxes";
 const DOC_API_BASE_URL = "http://localhost:8080/documents";
 const SORT_API_BASE_URL = "http://localhost:8080/sortations";
+const TABLE_API_BASE_URL = "http://localhost:8080/tableItems"
 
 class ApiService{
 
@@ -36,6 +37,23 @@ class ApiService{
 
     editItem(item){
         return axios.put(ITEM_API_BASE_URL + '/' + item.id, item);
+    }
+
+    // tableItem 관리
+    fetchTableItems() {
+        return axios.get(TABLE_API_BASE_URL);
+    }
+
+    fetchTableItemByID(itemID) {
+        return axios.get(TABLE_API_BASE_URL + '/' + itemID);
+    }
+
+    deleteTableItem(itemID) {
+        return axios.delete(TABLE_API_BASE_URL + '/' + itemID);
+    }
+
+    addTableItem(tableItem) {
+        return axios.post(TABLE_API_BASE_URL, tableItem);
     }
 
     // box 관리

@@ -1,7 +1,7 @@
   
 import React from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import SortationListComponent from "../item/SortationListComponent";
+import SortationListComponent from "../lists/SortationListComponent";
 import SignUpComponent from "../user/SignUpComponent";
 import SignInComponent from "../user/SignInComponent";
 
